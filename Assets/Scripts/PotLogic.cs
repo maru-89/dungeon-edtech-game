@@ -4,7 +4,6 @@ public class PotLogic : MonoBehaviour
 {
     [SerializeField] private PotSO potData;
     
-    private bool isCarried = false;
     private bool isThrown = false;
     private Rigidbody rb;
 
@@ -16,7 +15,6 @@ public class PotLogic : MonoBehaviour
     // Called by player interaction
     public void OnPickup(Transform carryPoint)
     {
-        isCarried = true;
         rb.isKinematic = true; // disable physics while carried
         transform.SetParent(carryPoint);
         transform.localPosition = Vector3.zero;
@@ -25,7 +23,6 @@ public class PotLogic : MonoBehaviour
 
     public void OnPutDown(Transform playerTransform)
     {
-        isCarried = false;
         transform.SetParent(null);
         // Place in front of player
         Vector3 putDownPosition = playerTransform.position + playerTransform.forward * 1.5f;
@@ -36,7 +33,6 @@ public class PotLogic : MonoBehaviour
 
     public void OnThrow(Vector3 throwForce)
     {
-        isCarried = false;
         isThrown = true;
         rb.isKinematic = false;
         transform.SetParent(null);
