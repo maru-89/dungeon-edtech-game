@@ -20,10 +20,18 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private List<PotSO> possiblePots; // For random pot generation in rooms
     private List<ItemSO> remainingRequiredGems; // tracked during generation
 
+    // For spawning locked door in furthest room
+    [SerializeField] private GameObject lockedDoorPrefab;
+
     IEnumerator LogAfterGeneration()
     {
         yield return new WaitForSeconds(5f);
         CleanupOrphanedDoors();
+
+        RoomController furthestRoom = GetFurthestRoom();
+        // spawn locked door in furthestRoom
+        SpawnLockedDoor();
+
         LogDungeonMap();
     }
 
@@ -100,6 +108,38 @@ public class DungeonManager : MonoBehaviour
         }
         
         return null; // no drop
+    }
+
+    public List<ItemSO> GetRequiredGems()
+    {
+        return new List<ItemSO>(requiredGems); // return copy not reference
+    }
+
+    void SpawnLockedDoor()
+    {
+        RoomController furthestRoom = GetFurthestRoom();
+        if (furthestRoom != null)
+        {
+            Instantiate(lockedDoorPrefab, furthestRoom.transform.position, Quaternion.identity);
+        }
+    }
+
+    public RoomController GetFurthestRoom()
+    {
+        RoomController furthestRoom = null;
+        float furthestDistance = 0f;
+
+        foreach (var kvp in dungeonMap)
+        {
+            float distance = Vector3.Distance(Vector3.zero, 
+                new Vector3(kvp.Key.x, 0, kvp.Key.y));
+            if (distance > furthestDistance)
+            {
+                furthestDistance = distance;
+                furthestRoom = kvp.Value;
+            }
+        }
+        return furthestRoom;
     }
     
     // Expose maxRooms and roomCount via properties

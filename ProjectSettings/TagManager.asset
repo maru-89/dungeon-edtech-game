@@ -12,6 +12,7 @@ TagManager:
   - DoorRight
   - CenterRoom
   - PotCarryPoint
+  - GemSocket
   layers:
   - Default
   - TransparentFX
