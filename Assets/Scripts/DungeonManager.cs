@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class DungeonManager : MonoBehaviour 
 {
@@ -22,6 +23,7 @@ public class DungeonManager : MonoBehaviour
 
     // For spawning locked door in furthest room
     [SerializeField] private GameObject lockedDoorPrefab;
+
 
     IEnumerator LogAfterGeneration()
     {
@@ -120,7 +122,15 @@ public class DungeonManager : MonoBehaviour
         RoomController furthestRoom = GetFurthestRoom();
         if (furthestRoom != null)
         {
-            Instantiate(lockedDoorPrefab, furthestRoom.transform.position, Quaternion.identity);
+            GameObject door = Instantiate(lockedDoorPrefab,
+                furthestRoom.transform.position,
+                Quaternion.identity);
+                
+            DungeonDoorLogic doorLogic = door.GetComponent<DungeonDoorLogic>();
+            if (doorLogic != null)
+            {
+                doorLogic.Initialise(requiredGems);
+            }
         }
     }
 
