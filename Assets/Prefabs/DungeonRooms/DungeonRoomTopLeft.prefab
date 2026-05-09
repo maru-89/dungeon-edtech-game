@@ -276,6 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomController
   gridPosition: {x: 0, y: 0}
+  spawnCenter: {fileID: 6918401534380572931}
 --- !u!1 &3401269617400918188
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomSpawner
   openingDirection: 4
+  parentGridPosition: {x: 0, y: 0}
 --- !u!65 &1646494484358998397
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -809,7 +811,39 @@ Transform:
   m_Children:
   - {fileID: 6261376491145834791}
   - {fileID: 7700555197728752939}
+  - {fileID: 6918401534380572931}
   m_Father: {fileID: 3147765959804705844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7288295746585317661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6918401534380572931}
+  m_Layer: 0
+  m_Name: RoomCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6918401534380572931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7288295746585317661}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5587122090741866743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7589869389655341993
 GameObject:
@@ -971,6 +1005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomSpawner
   openingDirection: 1
+  parentGridPosition: {x: 0, y: 0}
 --- !u!65 &706263005448251951
 BoxCollider:
   m_ObjectHideFlags: 0

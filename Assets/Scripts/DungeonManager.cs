@@ -24,6 +24,12 @@ public class DungeonManager : MonoBehaviour
     // For spawning locked door in furthest room
     [SerializeField] private GameObject lockedDoorPrefab;
 
+    // Fields for room content spawning, can be adjusted in inspector
+    [SerializeField] private int minPotsPerRoom = 2;
+    [SerializeField] private int maxPotsPerRoom = 5;
+    [SerializeField] private GameObject potPrefab;
+    [SerializeField] private GameObject enemyPrefab;
+
 
     IEnumerator LogAfterGeneration()
     {
@@ -31,10 +37,12 @@ public class DungeonManager : MonoBehaviour
         CleanupOrphanedDoors();
 
         RoomController furthestRoom = GetFurthestRoom();
-        // spawn locked door in furthestRoom
-        SpawnLockedDoor();
+        
+        SpawnLockedDoor(); // spawn locked door in furthestRoom
 
-        LogDungeonMap();
+        SpawnRoomContents(); // spawn pots and enemies in all rooms
+
+        LogDungeonMap(); // Final log to check everything after generation
     }
 
     void Start()
@@ -51,6 +59,23 @@ public class DungeonManager : MonoBehaviour
         } else {
             // If a second DungeonManager somehow exists, destroy it
             Destroy(gameObject);
+        }
+    }
+
+    void SpawnRoomContents()
+    {
+        Debug.Log($"Dictionary contains {dungeonMap.Count} rooms");
+        foreach (var kvp in dungeonMap)
+        {
+            RoomController room = kvp.Value;
+            
+            // Skip central room and locked door room eventually
+            room.SpawnRoomContents(
+                potPrefab,
+                enemyPrefab,
+                minPotsPerRoom,
+                maxPotsPerRoom
+            );
         }
     }
 
