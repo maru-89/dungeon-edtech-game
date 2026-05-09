@@ -3,12 +3,19 @@ using UnityEngine;
 
 public class GemSocketLogic : MonoBehaviour
 {
+    [SerializeField] private MeshRenderer redVisual; // For visual feedback, assign in inspector
+    [SerializeField] private MeshRenderer greenVisual;
+
     private GemSO requiredGem; // Set in inspector for now, Will be assigned during generation later
     private bool isFilled = false;
+    public bool IsFilled => isFilled;
 
-    public void Initialize(GemSO gem)
+    private DungeonDoorLogic parentDoor;
+
+    public void Initialize(GemSO gem, DungeonDoorLogic door)
     {
         requiredGem = gem;
+        parentDoor = door;
         if (requiredGem == null)
         {
             Debug.LogError("No required gem found for this socket!");
@@ -58,8 +65,9 @@ public class GemSocketLogic : MonoBehaviour
         if (requiredGem == gem) 
         {
             isFilled = true;
-            Debug.Log("Correct gem inserted!");
-            // Here you could also trigger some visual change to indicate the socket is filled
+            redVisual.enabled = false;
+            greenVisual.enabled = true;
+            parentDoor.OnSocketFilled();
         }
         else
         {

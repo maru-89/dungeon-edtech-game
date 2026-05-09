@@ -8,7 +8,8 @@ public class DungeonDoorLogic : MonoBehaviour
 
     private List<ItemSO> requiredGems; // get from DungeonManager when the door is initialized
 
-    [SerializeField] private GameObject gemSocketPrefab;
+    [SerializeField] private GameObject gemSocketPrefab; // assign in inspector
+
     private List<GemSocketLogic> sockets = new List<GemSocketLogic>();
 
     public void Initialise(List<ItemSO> gems)
@@ -30,10 +31,27 @@ public class DungeonDoorLogic : MonoBehaviour
             GemSocketLogic socketLogic = socket.GetComponent<GemSocketLogic>();
             if (socketLogic != null)
             {
-                socketLogic.Initialize(gems[i] as GemSO);
+                socketLogic.Initialize(gems[i] as GemSO, this);
                 sockets.Add(socketLogic);
             }
         }
+    }
+
+    public void OnSocketFilled()
+    {
+        foreach (GemSocketLogic socket in sockets)
+        {
+            if (!socket.IsFilled) return; // not all filled yet
+        }
+        
+        // All filled
+        OpenDoor();
+    }
+
+    void OpenDoor()
+    {
+        Debug.Log("All sockets filled, door unlocked!");
+        transform.localScale = Vector3.zero;
     }
 
     [SerializeField] private float socketSpacing = 2f; // adjustable in inspector
