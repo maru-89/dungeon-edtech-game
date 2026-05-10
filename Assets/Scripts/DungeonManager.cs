@@ -28,7 +28,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private int minPotsPerRoom = 2;
     [SerializeField] private int maxPotsPerRoom = 5;
     [SerializeField] private GameObject potPrefab;
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private List<GameObject> enemyPrefabs; // List of enemy types to spawn
 
 
     IEnumerator LogAfterGeneration()
@@ -72,7 +72,7 @@ public class DungeonManager : MonoBehaviour
             // Skip central room and locked door room eventually
             room.SpawnRoomContents(
                 potPrefab,
-                enemyPrefab,
+                enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], // pick random enemy type for this room
                 minPotsPerRoom,
                 maxPotsPerRoom
             );

@@ -91,8 +91,8 @@ public class RoomController : MonoBehaviour
             if (usedPositions.Contains(gridPos)) continue;
             
             usedPositions.Add(gridPos);
-            Vector3 position = spawnCenter.position + new Vector3(xOffset, 0, zOffset);
-            //Instantiate(enemyPrefab, position, Quaternion.identity);
+            Vector3 position = spawnCenter.position + new Vector3(xOffset, 10, zOffset);
+            Instantiate(enemyPrefab, position, Quaternion.identity);
             enemiesSpawned++;
         }
     }

@@ -178,7 +178,8 @@ MonoBehaviour:
   minPotsPerRoom: 2
   maxPotsPerRoom: 5
   potPrefab: {fileID: 89113680226322387, guid: 2fe2b56eb83a8d248ad3409b7e5ddf76, type: 3}
-  enemyPrefab: {fileID: 0}
+  enemyPrefabs:
+  - {fileID: 6459782387249067551, guid: a9a5d2400cfd14a448969db168c1f767, type: 3}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +711,8 @@ GameObject:
   - component: {fileID: 943960428}
   - component: {fileID: 943960429}
   - component: {fileID: 943960430}
+  - component: {fileID: 943960431}
+  - component: {fileID: 943960432}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -857,6 +860,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   maxInventorySize: 10
+--- !u!54 &943960431
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943960421}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &943960432
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943960421}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 2.3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &1312078920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -908,6 +961,10 @@ PrefabInstance:
     - target: {fileID: 3099407210783005573, guid: 720945be076b9824bbcc5a5406576871, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970092527673827776, guid: 720945be076b9824bbcc5a5406576871, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
