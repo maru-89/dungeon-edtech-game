@@ -5,6 +5,9 @@ public class SlimeLogic : EnemyLogic
     [SerializeField] private SlimeSO slimeData;
     private Transform playerTransform; // Cache player transform for chasing logic
 
+    private int maxHealth;
+    private int currentHealth;
+
     private float damageCooldown = 1f; // Time in seconds between damage instances to player
     private float lastDamageTime; // Timestamp of last damage instance to player
     private Rigidbody rb;
@@ -16,6 +19,8 @@ public class SlimeLogic : EnemyLogic
     {
         rb = GetComponent<Rigidbody>(); // Cache Rigidbody reference for movement
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform; // Cache player transform for chasing logic
+        maxHealth = slimeData.enemyHealth; // Store max health for potential future use (e.g. health bars)
+        currentHealth = maxHealth; // Initialize current health to max health
 
         // Get the trigger sphere specifically
         SphereCollider[] colliders = GetComponents<SphereCollider>();
@@ -115,5 +120,26 @@ public class SlimeLogic : EnemyLogic
             //rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0); // Reset horizontal velocity on landing to prevent acceleration buildup
             isGrounded = true;
         }
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        // Implement slime-specific damage logic here, e.g. reduce health, play hit animation, etc.
+        if (slimeData != null)
+        {
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+        }
+        Debug.Log($"Slime took {damage} damage. Implement health reduction and death logic.");
+    }
+
+    public override void Die()
+    {
+        // Implement slime-specific death logic here, e.g. play death animation, destroy object, etc.
+        Debug.Log("Slime died. Implement death effects and cleanup.");
+        Destroy(gameObject);
     }
 }
