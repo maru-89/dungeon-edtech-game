@@ -167,11 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungoenMaster
   maxRooms: 5
-  requiredGems:
-  - {fileID: 11400000, guid: 73b58f7066f34fa4698f9723f282d01e, type: 2}
-  - {fileID: 11400000, guid: 60ba098773a8c7f478beb36e87ffaf09, type: 2}
-  possibleDrops:
-  - {fileID: 11400000, guid: fdc8b80f49c54cb4aa2d054e38486130, type: 2}
+  currentPack: {fileID: 11400000, guid: 65a49c6143444be459a3688833ef9c00, type: 2}
   possiblePots:
   - {fileID: 11400000, guid: c07b38892c6c8ab4daf9bd5b38c72d90, type: 2}
   lockedDoorPrefab: {fileID: 5067803915438423296, guid: 587111e50ca6392448dd20b7db361bf8, type: 3}

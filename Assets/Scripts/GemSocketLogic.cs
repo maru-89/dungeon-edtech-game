@@ -24,7 +24,8 @@ public class GemSocketLogic : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Trigger entered by: {other.name} tag: {other.tag}");   //
+        if (isFilled) return; // already filled, ignore
+        
         if (other.CompareTag("Player"))
         {
             PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
@@ -33,23 +34,19 @@ public class GemSocketLogic : MonoBehaviour
                 List<ItemSO> items = playerInventory.GetInventoryItems();
                 foreach (ItemSO item in items)
                 {
-                    if (item is GemSO gem)
+                    if (item is GemSO gem && gem == requiredGem)
                     {
+                        // Only try if this is actually the required gem
                         TryInsertGem(gem);
                         if (isFilled)
                         {
                             playerInventory.RemoveItem(gem);
-                            Debug.Log("Correct gem removed from inventory after insertion.");
-
-                            // Optionally, you could also trigger some event here to indicate the socket has been filled
+                            Debug.Log("Correct gem removed from inventory.");
                         }
-                        else
-                        {
-                            Debug.Log("Player has item: " + item.itemName + " but it's not the required gem.");
-                        }
-
+                        return; // stop looking regardless of outcome
                     }
                 }
+                Debug.Log("Player does not have the required gem.");
             }
         }
     }

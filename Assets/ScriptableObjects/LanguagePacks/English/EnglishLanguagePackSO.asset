@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41236c5b34710c64bb6c6d0843a5bbc5, type: 3}
+  m_Name: EnglishLanguagePackSO
+  m_EditorClassIdentifier: Assembly-CSharp::LanguagePackSO
+  languageName: English
+  gradeLevel: 1
+  difficulty: 0
+  fullGemList:
+  - {fileID: 11400000, guid: f1ea4411a41a88f42b222734df957eef, type: 2}
+  - {fileID: 11400000, guid: 7dac095cdb1361b47bf7ed919867a245, type: 2}
+  - {fileID: 11400000, guid: 64169f50eb5e3b249ae3257385e602f5, type: 2}
+  - {fileID: 11400000, guid: 0b9037712c197014eb6f72ac73cb4d2f, type: 2}
+  - {fileID: 11400000, guid: b163bbf0c77698f47888e7dda205ef85, type: 2}
+  - {fileID: 11400000, guid: 6e03d8d4e6f79684ea284fa70c226824, type: 2}
+  - {fileID: 11400000, guid: 311ed8611bbf5d74ba89f62976199729, type: 2}
+  vocabWordList:
+  - {fileID: 11400000, guid: fa9fcdcefe8301b4ea0942e20a35dada, type: 2}

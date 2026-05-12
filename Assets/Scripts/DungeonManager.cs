@@ -14,12 +14,13 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private int maxRooms = 10;
     private int roomCount = 0;
 
+    [SerializeField] private LanguagePackSO currentPack;
     // For item drops, hardcoded for now, from pack later
-    [SerializeField] private List<ItemSO> requiredGems; // hardcoded for now, from pack later
-    [SerializeField] private List<ItemSO> possibleDrops; // all optional drops
+    //[SerializeField] private List<ItemSO> requiredGems; // hardcoded for now, from pack later
+    //[SerializeField] private List<ItemSO> possibleDrops; // all optional drops
 
     [SerializeField] private List<PotSO> possiblePots; // For random pot generation in rooms
-    private List<ItemSO> remainingRequiredGems; // tracked during generation
+    private List<GemSO> remainingRequiredGems; // tracked during generation
 
     // For spawning locked door in furthest room
     [SerializeField] private GameObject lockedDoorPrefab;
@@ -81,7 +82,7 @@ public class DungeonManager : MonoBehaviour
 
     public void InitialiseDungeon()
     {
-        remainingRequiredGems = new List<ItemSO>(requiredGems);
+        remainingRequiredGems = new List<GemSO>(currentPack.vocabWordList[0].requiredGems);
     }
 
     public void LogDungeonMap()
@@ -109,11 +110,11 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
-    public ItemSO GetRequiredDrop()
+    public GemSO GetRequiredDrop()
     {
         if (remainingRequiredGems.Count > 0)
         {
-            ItemSO gem = remainingRequiredGems[Random.Range(0, remainingRequiredGems.Count)];
+            GemSO gem = remainingRequiredGems[Random.Range(0, remainingRequiredGems.Count)];
             remainingRequiredGems.Remove(gem);
             return gem;
         }
@@ -131,7 +132,7 @@ public class DungeonManager : MonoBehaviour
         // Otherwise roll for optional drop
         if (Random.value <= potData.dropChance)
         {
-            return possibleDrops[Random.Range(0, possibleDrops.Count)];
+            return currentPack.fullGemList[Random.Range(0, currentPack.fullGemList.Count)];
         }
         
         return null; // no drop
@@ -139,7 +140,7 @@ public class DungeonManager : MonoBehaviour
 
     public List<ItemSO> GetRequiredGems()
     {
-        return new List<ItemSO>(requiredGems); // return copy not reference
+        return new List<ItemSO>(currentPack.vocabWordList[0].requiredGems); // return copy not reference
     }
 
     void SpawnLockedDoor()
@@ -154,7 +155,7 @@ public class DungeonManager : MonoBehaviour
             DungeonDoorLogic doorLogic = door.GetComponent<DungeonDoorLogic>();
             if (doorLogic != null)
             {
-                doorLogic.Initialise(requiredGems);
+                doorLogic.Initialise(currentPack.vocabWordList[0].requiredGems ); // pass required gems for unlocking
             }
         }
     }

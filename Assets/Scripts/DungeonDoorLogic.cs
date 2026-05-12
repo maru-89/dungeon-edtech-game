@@ -12,7 +12,7 @@ public class DungeonDoorLogic : MonoBehaviour
 
     private List<GemSocketLogic> sockets = new List<GemSocketLogic>();
 
-    public void Initialise(List<ItemSO> gems)
+    public void Initialise(List<GemSO> gems)
     {
         int socketCount = gems.Count;
         float totalWidth = (socketCount - 1) * socketSpacing;
@@ -31,7 +31,7 @@ public class DungeonDoorLogic : MonoBehaviour
             GemSocketLogic socketLogic = socket.GetComponent<GemSocketLogic>();
             if (socketLogic != null)
             {
-                socketLogic.Initialize(gems[i] as GemSO, this);
+                socketLogic.Initialize(gems[i], this);
                 sockets.Add(socketLogic);
             }
         }
