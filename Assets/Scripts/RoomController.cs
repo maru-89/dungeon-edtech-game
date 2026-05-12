@@ -51,19 +51,20 @@ public class RoomController : MonoBehaviour
 
     public void SpawnRoomContents(GameObject potPrefab, GameObject enemyPrefab, int minPots, int maxPots)
     {        
-        HashSet<Vector2Int> usedPositions = new HashSet<Vector2Int>(); // to track used grid positions for spawning and checking overlaps
+        System.Random rng = DungeonManager.Instance.SeededRandom; // use seeded random generator from DungeonManager for consistency
+        HashSet<Vector2Int> usedPositions = new HashSet<Vector2Int>();
 
         // Spawn pots
-        int potCount = Random.Range(minPots, maxPots + 1);
+        int potCount = rng.Next(minPots, maxPots + 1);
         int potsSpawned = 0;
-        int attempts = 0; // safety to prevent infinite loops
+        int attempts = 0;
         
         while (potsSpawned < potCount && attempts < 20)
         {
             attempts++;
             
-            int xOffset = oddOffsets[Random.Range(0, oddOffsets.Length)];
-            int zOffset = oddOffsets[Random.Range(0, oddOffsets.Length)];
+            int xOffset = oddOffsets[rng.Next(0, oddOffsets.Length)];
+            int zOffset = oddOffsets[rng.Next(0, oddOffsets.Length)];
             Vector2Int gridPos = new Vector2Int(xOffset, zOffset);
             
             if (usedPositions.Contains(gridPos)) continue;
@@ -76,7 +77,7 @@ public class RoomController : MonoBehaviour
         }
 
         // Spawn enemies
-        int enemyCount = Random.Range(1, 3);
+        int enemyCount = rng.Next(1, 3);
         int enemiesSpawned = 0;
         attempts = 0;
         
@@ -84,8 +85,8 @@ public class RoomController : MonoBehaviour
         {
             attempts++;
             
-            int xOffset = evenOffsets[Random.Range(0, evenOffsets.Length)];
-            int zOffset = evenOffsets[Random.Range(0, evenOffsets.Length)];
+            int xOffset = evenOffsets[rng.Next(0, evenOffsets.Length)];
+            int zOffset = evenOffsets[rng.Next(0, evenOffsets.Length)];
             Vector2Int gridPos = new Vector2Int(xOffset, zOffset);
             
             if (usedPositions.Contains(gridPos)) continue;

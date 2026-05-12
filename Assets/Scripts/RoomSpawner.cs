@@ -44,47 +44,45 @@ public class RoomSpawner : MonoBehaviour
             Vector2Int newGridPosition = GetNewGridPosition();
             Debug.Log($"Spawner at world pos {transform.position} | openingDirection:{openingDirection} | parentGrid:{parentGridPosition} | newGridPos:{newGridPosition}");
 
-            // Room already exists here, just destroy this spawner
             if (DungeonManager.dungeonMap.ContainsKey(newGridPosition))
             {
                 spawned = true;
                 return;
             }
-
-            // Room limit reached
+            
             if (DungeonManager.Instance.RoomCount >= DungeonManager.Instance.MaxRooms)
             {
-                // TODO: delete this door
                 spawned = true;
                 return;
             }
 
+            System.Random rng = DungeonManager.Instance.SeededRandom;
             GameObject newRoom = null;
 
             if (openingDirection == 1)
             {
-                rand = Random.Range(0, templates.bottomRooms.Length);
+                rand = rng.Next(0, templates.bottomRooms.Length);
                 newRoom = Instantiate(templates.bottomRooms[rand],
                     transform.position,
                     templates.bottomRooms[rand].transform.rotation);
             }
             else if (openingDirection == 2)
             {
-                rand = Random.Range(0, templates.topRooms.Length);
+                rand = rng.Next(0, templates.topRooms.Length);
                 newRoom = Instantiate(templates.topRooms[rand],
                     transform.position,
                     templates.topRooms[rand].transform.rotation);
             }
             else if (openingDirection == 3)
             {
-                rand = Random.Range(0, templates.leftRooms.Length);
+                rand = rng.Next(0, templates.leftRooms.Length);
                 newRoom = Instantiate(templates.leftRooms[rand],
                     transform.position,
                     templates.leftRooms[rand].transform.rotation);
             }
             else if (openingDirection == 4)
             {
-                rand = Random.Range(0, templates.rightRooms.Length);
+                rand = rng.Next(0, templates.rightRooms.Length);
                 newRoom = Instantiate(templates.rightRooms[rand],
                     transform.position,
                     templates.rightRooms[rand].transform.rotation);
@@ -92,15 +90,12 @@ public class RoomSpawner : MonoBehaviour
 
             if (newRoom != null)
             {
-                RoomController roomController = 
-                    newRoom.GetComponent<RoomController>();
+                RoomController roomController = newRoom.GetComponent<RoomController>();
                     
                 if (roomController != null)
                 {
-                    // Set grid position on the new room
                     roomController.gridPosition = newGridPosition;
 
-                    // Pass parent grid position to all child spawners
                     RoomSpawner[] childSpawners = 
                         newRoom.GetComponentsInChildren<RoomSpawner>();
                     foreach (RoomSpawner spawner in childSpawners)
@@ -108,7 +103,6 @@ public class RoomSpawner : MonoBehaviour
                         spawner.parentGridPosition = newGridPosition;
                     }
 
-                    // Register in dictionary
                     DungeonManager.dungeonMap[newGridPosition] = roomController;
                     DungeonManager.Instance.IncrementRoomCount();
                 }

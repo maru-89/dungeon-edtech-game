@@ -166,7 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7341dd1122ea9f94d8da69bcef438ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungoenMaster
-  maxRooms: 5
+  dungeonSeed: 1337
+  useRandomSeed: 0
+  maxRooms: 10
   currentPack: {fileID: 11400000, guid: 65a49c6143444be459a3688833ef9c00, type: 2}
   possiblePots:
   - {fileID: 11400000, guid: c07b38892c6c8ab4daf9bd5b38c72d90, type: 2}

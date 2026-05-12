@@ -8,8 +8,15 @@ public class DungeonManager : MonoBehaviour
     
     // The singleton instance
     public static DungeonManager Instance { get; private set; }
+
+    // Expose seeded random generator for use in other classes
+    public System.Random SeededRandom { get; private set; }
     
     public static Dictionary<Vector2Int, RoomController> dungeonMap = new Dictionary<Vector2Int, RoomController>();
+
+    // Dungeon generation parameters
+    [SerializeField] private int dungeonSeed = 0;
+    [SerializeField] private bool useRandomSeed = true;
     
     [SerializeField] private int maxRooms = 10;
     private int roomCount = 0;
@@ -55,12 +62,17 @@ public class DungeonManager : MonoBehaviour
     void Awake() 
     {
         // Set the singleton instance
-        if (Instance == null) {
+        if (Instance == null)
+        {
             Instance = this;
-        } else {
-            // If a second DungeonManager somehow exists, destroy it
-            Destroy(gameObject);
         }
+        else
+        {
+            Destroy(gameObject);
+            return; // don't run anything else on the duplicate
+        }
+
+        SetDungeonSeed();
     }
 
     void SpawnRoomContents()
@@ -73,16 +85,24 @@ public class DungeonManager : MonoBehaviour
             // Skip central room and locked door room eventually
             room.SpawnRoomContents(
                 potPrefab,
-                enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], // pick random enemy type for this room
+                enemyPrefabs[SeededRandom.Next(0, enemyPrefabs.Count)], // pick random enemy type for this room
                 minPotsPerRoom,
                 maxPotsPerRoom
             );
         }
     }
 
+    void SetDungeonSeed()
+    {
+        // Set seed for reproducibility
+        int seed = useRandomSeed ? System.DateTime.Now.Millisecond : dungeonSeed;
+        SeededRandom = new System.Random(seed);
+        Debug.Log($"Dungeon seed: {seed}");
+    }
+
     public void InitialiseDungeon()
     {
-        remainingRequiredGems = new List<GemSO>(currentPack.vocabWordList[0].requiredGems);
+        remainingRequiredGems = new List<GemSO>(currentPack.vocabWordList[0].requiredGems); // copy required gems from pack for tracking
     }
 
     public void LogDungeonMap()
@@ -114,7 +134,7 @@ public class DungeonManager : MonoBehaviour
     {
         if (remainingRequiredGems.Count > 0)
         {
-            GemSO gem = remainingRequiredGems[Random.Range(0, remainingRequiredGems.Count)];
+            GemSO gem = remainingRequiredGems[SeededRandom.Next(0, remainingRequiredGems.Count)];
             remainingRequiredGems.Remove(gem);
             return gem;
         }
@@ -130,9 +150,9 @@ public class DungeonManager : MonoBehaviour
         }
         
         // Otherwise roll for optional drop
-        if (Random.value <= potData.dropChance)
+        if (SeededRandom.NextDouble() <= potData.dropChance)
         {
-            return currentPack.fullGemList[Random.Range(0, currentPack.fullGemList.Count)];
+            return currentPack.fullGemList[SeededRandom.Next(0, currentPack.fullGemList.Count)];
         }
         
         return null; // no drop
