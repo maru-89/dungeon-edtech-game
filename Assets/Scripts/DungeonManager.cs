@@ -19,6 +19,9 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private bool useRandomSeed = true;
     
     [SerializeField] private int maxRooms = 10;
+
+    [SerializeField] private float heartDropChance = 0.5f; // Chance for a heart drop instead of a gem
+    [SerializeField] private ItemSO heartItem; // Reference to heart item for drops
     private int roomCount = 0;
 
     [SerializeField] private LanguagePackSO currentPack;
@@ -143,19 +146,25 @@ public class DungeonManager : MonoBehaviour
 
     public ItemSO GetDrop(PotSO potData)
     {
-        // Required gems take priority
         if (remainingRequiredGems.Count > 0)
         {
+            Debug.Log($"Required gems remaining: {remainingRequiredGems.Count}, dropping gem");
             return GetRequiredDrop();
         }
-        
-        // Otherwise roll for optional drop
+
         if (SeededRandom.NextDouble() <= potData.dropChance)
         {
+            Debug.Log($"Random roll: {SeededRandom.NextDouble():F2}, Heart drop chance: {heartDropChance}");
+            if (SeededRandom.NextDouble() <= heartDropChance)
+            {
+                Debug.Log("Dropping heart item");
+                return heartItem;
+            }
+            Debug.Log("Random Gem drop");
             return currentPack.fullGemList[SeededRandom.Next(0, currentPack.fullGemList.Count)];
         }
-        
-        return null; // no drop
+
+        return null;
     }
 
     public List<ItemSO> GetRequiredGems()
