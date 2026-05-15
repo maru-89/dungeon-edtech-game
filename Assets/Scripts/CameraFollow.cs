@@ -8,6 +8,5 @@ public class CameraFollow : MonoBehaviour
     void LateUpdate()
     {
         transform.position = target.position + offset;
-        // No rotation update, camera stays fixed looking down
     }
 }

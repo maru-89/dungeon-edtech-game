@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: HeartDropSO
   m_EditorClassIdentifier: Assembly-CSharp::HeartSO
-  itemName: 
+  itemName: Heart Drop
   itemID: 0
   itemIcon: {fileID: 0}
-  itemPrefab: {fileID: 0}
-  healAmount: 25
+  itemPrefab: {fileID: 6246095042746125617, guid: 108e5c464193f3d43a671f5633a907d9, type: 3}
+  healAmount: 1
