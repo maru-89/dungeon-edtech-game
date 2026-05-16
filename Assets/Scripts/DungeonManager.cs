@@ -179,7 +179,7 @@ public class DungeonManager : MonoBehaviour
         {
             GameObject door = Instantiate(lockedDoorPrefab,
                 furthestRoom.transform.position,
-                Quaternion.identity);
+                Quaternion.Euler(0f, 180f, 0f));
                 
             DungeonDoorLogic doorLogic = door.GetComponent<DungeonDoorLogic>();
             if (doorLogic != null)

@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 612256998176058940}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 2.5, z: 0}
+  m_LocalPosition: {x: 2.5, y: 1.8, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -315,6 +315,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonDoorLogic
   gemSocketPrefab: {fileID: 2888646410712663500, guid: c5ef59680a6bbfe45ab0fc162bf8036a, type: 3}
+  arcRadius: 1.5
+  arcAngle: 90
+  socketAnchor: {fileID: 9133594953966773231}
   socketSpacing: 2
 --- !u!1 &7836034342164203769
 GameObject:

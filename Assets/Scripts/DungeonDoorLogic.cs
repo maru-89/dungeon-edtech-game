@@ -12,21 +12,24 @@ public class DungeonDoorLogic : MonoBehaviour
 
     private List<GemSocketLogic> sockets = new List<GemSocketLogic>();
 
+    
+    [SerializeField] private float arcRadius = 1.5f;
+    [SerializeField] private float arcAngle = 90f;
+    [SerializeField] private Transform socketAnchor; // assign in inspector, this is the point around which the sockets will be arranged
+
     public void Initialise(List<GemSO> gems)
     {
         int socketCount = gems.Count;
-        float totalWidth = (socketCount - 1) * socketSpacing;
-        float startOffset = -totalWidth / 2f; // center the sockets on the door
 
         for (int i = 0; i < socketCount; i++)
         {
-            float xOffset = startOffset + (i * socketSpacing);
-            Vector3 offset = transform.right * xOffset;
-            
+            float angle = socketCount > 1 ? (arcAngle / (socketCount - 1)) * i - (arcAngle / 2f) : 0f;
+            Vector3 offset = Quaternion.AngleAxis(angle, socketAnchor.forward) * socketAnchor.up * arcRadius;
+
             GameObject socket = Instantiate(gemSocketPrefab,
-                transform.position + offset,
+                socketAnchor.position + offset,
                 Quaternion.identity,
-                transform);
+                socketAnchor);
 
             GemSocketLogic socketLogic = socket.GetComponent<GemSocketLogic>();
             if (socketLogic != null)
@@ -53,6 +56,4 @@ public class DungeonDoorLogic : MonoBehaviour
         Debug.Log("All sockets filled, door unlocked!");
         transform.localScale = Vector3.zero;
     }
-
-    [SerializeField] private float socketSpacing = 2f; // adjustable in inspector
-    }
+}

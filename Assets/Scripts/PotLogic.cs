@@ -40,9 +40,9 @@ public class PotLogic : MonoBehaviour
     }
 
     // Break on weapon hit via this public method
-    public void OnWeaponHit()
+    public void OnWeaponHit(Vector3 hitDirection)
     {
-        Break();
+        Break(hitDirection);
     }
 
     // Break on landing after throw
@@ -54,7 +54,7 @@ public class PotLogic : MonoBehaviour
         }
     }
 
-    void Break()
+    void Break(Vector3 hitDirection = default)
     {
         ItemSO drop = DungeonManager.Instance.GetDrop(potData);
         if (drop != null)
@@ -64,6 +64,18 @@ public class PotLogic : MonoBehaviour
             if (dropLogic != null)
             {
                 dropLogic.Initialise(drop);
+            }
+
+            Rigidbody dropRb = droppedItem.GetComponent<Rigidbody>();
+            if (dropRb != null)
+            {
+                Vector3 randomSpin = Random.insideUnitSphere * 3f;
+                Vector3 force = rb.linearVelocity.magnitude > 0.1f 
+                    ? rb.linearVelocity * 0.5f
+                    : hitDirection * 4f;
+                    
+                dropRb.AddForce(force + Vector3.up * 3f, ForceMode.Impulse);
+                dropRb.AddTorque(randomSpin, ForceMode.Impulse);
             }
         }
         Destroy(gameObject);

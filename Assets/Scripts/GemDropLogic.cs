@@ -18,7 +18,9 @@ public class GemDropLogic : ItemDropLogic
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Trigger entered by: {other.name} tag: {other.tag}");   //
+        if (gemData == null) return; // safety check to prevent null reference errors
+        
+        Debug.Log($"Trigger entered by: {other.name} tag: {other.tag}");
         if (other.CompareTag("Player"))
         {
             PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();

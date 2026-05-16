@@ -13,6 +13,11 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log("Inventory is full! Cannot add item: " + item.itemName);
             return false;
         }
+        if (item ==  null)
+        {
+            Debug.Log("Attempted to add null item to inventory.");
+            return false;
+        }
         inventoryItems.Add(item);
         Debug.Log("Added item to inventory: " + item.itemName);
         return true;

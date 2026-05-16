@@ -59,7 +59,7 @@ public class PlayerAttackLogic : MonoBehaviour
             PotLogic pot = entity.GetComponent<PotLogic>();
             if (pot != null)
             {
-                pot.OnWeaponHit();
+                pot.OnWeaponHit(transform.forward);
             }
         }
     }
