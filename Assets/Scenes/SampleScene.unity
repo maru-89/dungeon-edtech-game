@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungoenMaster
   dungeonSeed: 1337
-  useRandomSeed: 0
+  useRandomSeed: 1
   maxRooms: 10
   heartDropChance: 0.25
   heartItem: {fileID: 11400000, guid: 3bb9a669606c4a7448107da37f0c216e, type: 2}

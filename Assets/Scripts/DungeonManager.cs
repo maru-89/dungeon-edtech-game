@@ -25,6 +25,7 @@ public class DungeonManager : MonoBehaviour
     private int roomCount = 0;
 
     [SerializeField] private LanguagePackSO currentPack;
+    private VocabWordSO selectedWord;
     // For item drops, hardcoded for now, from pack later
     //[SerializeField] private List<ItemSO> requiredGems; // hardcoded for now, from pack later
     //[SerializeField] private List<ItemSO> possibleDrops; // all optional drops
@@ -105,7 +106,10 @@ public class DungeonManager : MonoBehaviour
 
     public void InitialiseDungeon()
     {
-        remainingRequiredGems = new List<GemSO>(currentPack.vocabWordList[0].requiredGems); // copy required gems from pack for tracking
+        int wordIndex = SeededRandom.Next(0, currentPack.vocabWordList.Count);
+        Debug.Log($"Word index selected: {wordIndex}");
+        selectedWord = currentPack.vocabWordList[wordIndex];
+        remainingRequiredGems = new List<GemSO>(selectedWord.requiredGems); // copy required gems from pack for tracking
     }
 
     public void LogDungeonMap()
@@ -169,7 +173,7 @@ public class DungeonManager : MonoBehaviour
 
     public List<ItemSO> GetRequiredGems()
     {
-        return new List<ItemSO>(currentPack.vocabWordList[0].requiredGems); // return copy not reference
+        return new List<ItemSO>(selectedWord.requiredGems); // return copy not reference
     }
 
     void SpawnLockedDoor()
@@ -184,7 +188,7 @@ public class DungeonManager : MonoBehaviour
             DungeonDoorLogic doorLogic = door.GetComponent<DungeonDoorLogic>();
             if (doorLogic != null)
             {
-                doorLogic.Initialise(currentPack.vocabWordList[0]); // pass required gems for unlocking
+                doorLogic.Initialise(selectedWord); // pass required gems for unlocking
             }
         }
     }

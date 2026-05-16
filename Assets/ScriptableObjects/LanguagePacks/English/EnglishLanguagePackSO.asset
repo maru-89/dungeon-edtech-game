@@ -23,5 +23,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b163bbf0c77698f47888e7dda205ef85, type: 2}
   - {fileID: 11400000, guid: 6e03d8d4e6f79684ea284fa70c226824, type: 2}
   - {fileID: 11400000, guid: 311ed8611bbf5d74ba89f62976199729, type: 2}
+  - {fileID: 11400000, guid: 03691a77839b605418c5fff07d3632c0, type: 2}
+  - {fileID: 11400000, guid: 2caf35fe3b6efdc4c8c38a21114fdfa4, type: 2}
+  - {fileID: 11400000, guid: 1ed1d78e70a99e8448689b9f5bd13d44, type: 2}
   vocabWordList:
   - {fileID: 11400000, guid: fa9fcdcefe8301b4ea0942e20a35dada, type: 2}
+  - {fileID: 11400000, guid: fefcc9d823e1b84439393d2dd3976080, type: 2}
+  - {fileID: 11400000, guid: 55837009f8703834ca2272cc2a46caa9, type: 2}
