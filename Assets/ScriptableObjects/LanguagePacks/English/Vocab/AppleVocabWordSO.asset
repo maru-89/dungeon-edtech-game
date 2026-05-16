@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AppleVocabWordSO
   m_EditorClassIdentifier: Assembly-CSharp::VocabWordSO
   displayWord: apple
+  displayImage: {fileID: 21300000, guid: 480e4a7aadbbca44f9ae88db5e7e0f5d, type: 3}
   requiredGems:
   - {fileID: 11400000, guid: f1ea4411a41a88f42b222734df957eef, type: 2}
   - {fileID: 11400000, guid: 311ed8611bbf5d74ba89f62976199729, type: 2}

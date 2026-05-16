@@ -8,6 +8,7 @@ public class DungeonDoorLogic : MonoBehaviour
 
     private List<ItemSO> requiredGems; // get from DungeonManager when the door is initialized
 
+    [SerializeField] private UnityEngine.UI.Image wordDisplayImg; // assign in inspector, this will show the vocab word associated with the door
     [SerializeField] private GameObject gemSocketPrefab; // assign in inspector
 
     private List<GemSocketLogic> sockets = new List<GemSocketLogic>();
@@ -17,9 +18,12 @@ public class DungeonDoorLogic : MonoBehaviour
     [SerializeField] private float arcAngle = 90f;
     [SerializeField] private Transform socketAnchor; // assign in inspector, this is the point around which the sockets will be arranged
 
-    public void Initialise(List<GemSO> gems)
+    public void Initialise(VocabWordSO vocabWordSO)
     {
-        int socketCount = gems.Count;
+        requiredGems = new List<ItemSO>(vocabWordSO.requiredGems);
+        wordDisplayImg.sprite = vocabWordSO.displayImage; // assign door image based on vocab word, for now just a placeholder
+
+        int socketCount = requiredGems.Count;
 
         for (int i = 0; i < socketCount; i++)
         {
@@ -34,7 +38,7 @@ public class DungeonDoorLogic : MonoBehaviour
             GemSocketLogic socketLogic = socket.GetComponent<GemSocketLogic>();
             if (socketLogic != null)
             {
-                socketLogic.Initialize(gems[i], this);
+                socketLogic.Initialize(requiredGems[i] as GemSO, this);
                 sockets.Add(socketLogic);
             }
         }

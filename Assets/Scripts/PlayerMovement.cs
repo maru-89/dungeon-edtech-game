@@ -34,22 +34,25 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = moveAction.ReadValue<Vector2>();
         Vector3 moveDirection = new Vector3(direction.x, 0, direction.y);
 
-        if (!controller.isGrounded)
+        if (controller.enabled == true)
         {
-            velocity.y += Physics.gravity.y * Time.deltaTime;
-        }
-        else
-        {
-            velocity.y = -2f;
-        }
+            if (!controller.isGrounded)
+            {
+                velocity.y += Physics.gravity.y * Time.deltaTime;
+            }
+            else
+            {
+                velocity.y = -2f;
+            }
 
-        controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-        controller.Move(velocity * Time.deltaTime);
+            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+            controller.Move(velocity * Time.deltaTime);
 
-        if (moveDirection != Vector3.zero)
-        {
-            lastMoveDirection = moveDirection;
-            transform.rotation = Quaternion.LookRotation(lastMoveDirection);
+            if (moveDirection != Vector3.zero)
+            {
+                lastMoveDirection = moveDirection;
+                transform.rotation = Quaternion.LookRotation(lastMoveDirection);
+            }
         }
     }
 

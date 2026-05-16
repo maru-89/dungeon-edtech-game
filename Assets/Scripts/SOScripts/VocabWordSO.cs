@@ -5,5 +5,6 @@ using UnityEngine;
 public class VocabWordSO : ScriptableObject
 {
     public string displayWord;
+    public Sprite displayImage;
     public List<GemSO> requiredGems;
 }

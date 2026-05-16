@@ -184,7 +184,7 @@ public class DungeonManager : MonoBehaviour
             DungeonDoorLogic doorLogic = door.GetComponent<DungeonDoorLogic>();
             if (doorLogic != null)
             {
-                doorLogic.Initialise(currentPack.vocabWordList[0].requiredGems ); // pass required gems for unlocking
+                doorLogic.Initialise(currentPack.vocabWordList[0]); // pass required gems for unlocking
             }
         }
     }

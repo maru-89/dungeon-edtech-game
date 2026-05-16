@@ -5,6 +5,8 @@ public class GemDropLogic : ItemDropLogic
     private GemSO gemData;
     private Rigidbody rb;
 
+    [SerializeField] private TMPro.TextMeshPro gemText; // assign in inspector, this will display the letter on the gem
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -14,6 +16,7 @@ public class GemDropLogic : ItemDropLogic
     public override void Initialise(ItemSO data)
     {
         gemData = data as GemSO;
+        gemText.text = gemData.gemCharacter.ToString();
     }
 
     void OnTriggerEnter(Collider other)

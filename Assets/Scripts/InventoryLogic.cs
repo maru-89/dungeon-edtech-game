@@ -14,6 +14,8 @@ public class InventoryLogic : MonoBehaviour
 
     private List<GameObject> spawnedItems = new List<GameObject>();
     private bool isOpen = false;
+    private CharacterController controller;
+
 
     void Awake()
     {
@@ -21,6 +23,7 @@ public class InventoryLogic : MonoBehaviour
         inventoryAction = playerInput.actions["Player/Inventory"];
         playerInventory = GetComponent<PlayerInventory>();
         cameraLogic = Camera.main.GetComponent<CameraLogic>();
+        controller = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -31,9 +34,15 @@ public class InventoryLogic : MonoBehaviour
             cameraLogic.ToggleCameraPosition();
 
             if (isOpen)
+            {
                 ShowInventoryItems();
+                controller.enabled = false; // disable character controller to prevent movement while inventory is open
+            }
             else
+            {
                 DestroyInventoryItems();
+                controller.enabled = true; // re-enable character controller when inventory is closed
+            }
         }
     }
 
@@ -48,7 +57,12 @@ public class InventoryLogic : MonoBehaviour
             Vector3 offset = Quaternion.Euler(0, angle, 0) * transform.forward * arcRadius;
             Vector3 spawnPosition = inventoryAnchor.position + offset;
 
-            GameObject spawnedItem = Instantiate(items[i].itemPrefab, spawnPosition, Quaternion.identity);
+            GameObject spawnedItem = Instantiate(items[i].itemPrefab, spawnPosition, transform.rotation);
+            GemDropLogic gemLogic = spawnedItem.GetComponent<GemDropLogic>();
+            if (gemLogic != null)
+            {
+                gemLogic.Initialise(items[i]);
+            }
 
             spawnedItems.Add(spawnedItem);
         }
