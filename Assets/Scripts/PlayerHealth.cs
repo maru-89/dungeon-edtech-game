@@ -40,6 +40,7 @@ public class PlayerHealth : MonoBehaviour
     {
         // Handle player death (e.g., play animation, reload scene, etc.)
         Debug.Log("Player has died.");
+        GameManager.Instance.OnPlayerDeath(); // Notify GameManager of player death
     }
 
     public int GetCurrentHealth()

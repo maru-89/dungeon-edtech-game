@@ -28,7 +28,7 @@ public class InventoryLogic : MonoBehaviour
 
     void Update()
     {
-        if (inventoryAction.WasPressedThisFrame())
+        if (inventoryAction.WasPressedThisFrame() && !cameraLogic.IsLerping())
         {
             isOpen = !isOpen;
             cameraLogic.ToggleCameraPosition();
@@ -75,5 +75,10 @@ public class InventoryLogic : MonoBehaviour
             Destroy(item);
         }
         spawnedItems.Clear();
+    }
+
+    void OnDestroy()
+    {
+        DestroyInventoryItems(); // Ensure any remaining items are cleaned up if the player object is destroyed
     }
 }

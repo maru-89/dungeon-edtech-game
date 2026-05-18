@@ -59,5 +59,6 @@ public class DungeonDoorLogic : MonoBehaviour
     {
         Debug.Log("All sockets filled, door unlocked!");
         transform.localScale = Vector3.zero;
+        GameManager.Instance.OnDungeonDoorOpened(); // Notify GameManager that the door has been opened (win condition)
     }
 }

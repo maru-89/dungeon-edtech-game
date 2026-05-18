@@ -47,4 +47,9 @@ public class CameraLogic : MonoBehaviour
         transform.rotation = target.rotation;
         isLerping = false;
     }
+
+    public bool IsLerping()
+    {
+        return isLerping;
+    }
 }

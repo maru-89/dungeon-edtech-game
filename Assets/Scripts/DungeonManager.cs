@@ -63,17 +63,17 @@ public class DungeonManager : MonoBehaviour
         InitialiseDungeon();
     }
     
-    void Awake() 
+    void Awake()
     {
-        // Set the singleton instance
         if (Instance == null)
         {
             Instance = this;
+            dungeonMap.Clear(); // clear before any RoomController registers
         }
         else
         {
             Destroy(gameObject);
-            return; // don't run anything else on the duplicate
+            return;
         }
 
         SetDungeonSeed();
