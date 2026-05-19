@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SlimeLogic : EnemyLogic
@@ -14,6 +15,11 @@ public class SlimeLogic : EnemyLogic
     private bool isGrounded = false; // Track if slime is on the ground to control jumping
     private SphereCollider triggerSphere;
     private Vector3 wanderDirection;
+    private bool isKnockedBack = false;
+    private bool isDead = false;
+    private float hitCooldown = 0.2f;
+    private float lastHitTime;
+    private float knockbackResetTime;
 
     void Awake()
     {
@@ -36,11 +42,16 @@ public class SlimeLogic : EnemyLogic
 
     public override void Initialise(EnemySO data)
     {
+        base.Initialise(data); // Call base method to set enemyData
         slimeData = data as SlimeSO; // Cast to SlimeSO to access slime-specific properties
     }
 
     void Update()
     {
+        if (isKnockedBack && Time.time >= knockbackResetTime)
+        {
+            isKnockedBack = false;
+        }
         if (isGrounded)
         {
             Jump();
@@ -70,6 +81,12 @@ public class SlimeLogic : EnemyLogic
 
     void Jump()
     {
+        if (isKnockedBack)
+        {
+            Debug.Log("Jump blocked by knockback");
+            isGrounded = false;
+            return;
+        }
         rb.AddForce(Vector3.up * Mathf.Sqrt(slimeData.slimeJumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
         if (IsPlayerInRange())
         {
@@ -122,24 +139,38 @@ public class SlimeLogic : EnemyLogic
         }
     }
 
+    public override void ApplyKnockback(Vector3 direction, float force)
+    {
+        if (isKnockedBack) return;
+        
+        isKnockedBack = true;
+        knockbackResetTime = Time.time + 0.5f;
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(direction * force, ForceMode.Impulse);
+    }
+
     public override void TakeDamage(int damage)
     {
-        // Implement slime-specific damage logic here, e.g. reduce health, play hit animation, etc.
-        if (slimeData != null)
+        // Slime-specific damage logic
+        if (isDead) return;
+        if (Time.time - lastHitTime < hitCooldown) return; // this might be blocking the kill
+        
+        lastHitTime = Time.time;
+        currentHealth -= damage;
+        
+        Debug.Log($"Slime health: {currentHealth}");
+        
+        if (currentHealth <= 0)
         {
-            currentHealth -= damage;
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
+            isDead = true;
+            Die();
         }
         Debug.Log($"Slime took {damage} damage. Implement health reduction and death logic.");
     }
 
-    public override void Die()
+    public void Die()
     {
-        // Implement slime-specific death logic here, e.g. play death animation, destroy object, etc.
-        Debug.Log("Slime died. Implement death effects and cleanup.");
-        Destroy(gameObject);
+        Debug.Log("Slime died.");
+        base.Die(slimeData.coinDropChance);
     }
 }

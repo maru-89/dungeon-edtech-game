@@ -20,8 +20,10 @@ public class DungeonManager : MonoBehaviour
     
     [SerializeField] private int maxRooms = 10;
 
-    [SerializeField] private float heartDropChance = 0.5f; // Chance for a heart drop instead of a gem
+    [SerializeField] private float heartDropChance = 0.25f; // Chance for a heart drop instead of a gem
+    [SerializeField] private float coinDropChance = 0.25f; // Chance for a coin drop instead of a gem
     [SerializeField] private ItemSO heartItem; // Reference to heart item for drops
+    [SerializeField] private ItemSO coinItem; // Reference to coin item for drops
     private int roomCount = 0;
 
     [SerializeField] private LanguagePackSO currentPack;
@@ -158,16 +160,28 @@ public class DungeonManager : MonoBehaviour
 
         if (SeededRandom.NextDouble() <= potData.dropChance)
         {
-            Debug.Log($"Random roll: {SeededRandom.NextDouble():F2}, Heart drop chance: {heartDropChance}");
             if (SeededRandom.NextDouble() <= heartDropChance)
             {
                 Debug.Log("Dropping heart item");
                 return heartItem;
             }
+            if (SeededRandom.NextDouble() <= coinDropChance)
+            {
+                Debug.Log("Dropping coin item");
+                return coinItem;
+            }
             Debug.Log("Random Gem drop");
             return currentPack.fullGemList[SeededRandom.Next(0, currentPack.fullGemList.Count)];
         }
 
+        return null;
+    }
+    public ItemSO GetEnemyDrop(float dropChance)
+    {
+        if (SeededRandom.NextDouble() <= dropChance)
+        {
+            return coinItem;
+        }
         return null;
     }
 

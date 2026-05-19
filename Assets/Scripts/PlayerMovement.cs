@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = moveAction.ReadValue<Vector2>();
         Vector3 moveDirection = new Vector3(direction.x, 0, direction.y);
 
-        if (controller.enabled == true)
+        if (controller.enabled)
         {
             if (!controller.isGrounded)
             {
@@ -45,13 +45,14 @@ public class PlayerMovement : MonoBehaviour
                 velocity.y = -2f;
             }
 
-            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-            controller.Move(velocity * Time.deltaTime);
+            Vector3 finalMovement = (moveDirection * moveSpeed) + velocity;
+            controller.Move(finalMovement * Time.deltaTime); // Move the player based on input and gravity
 
             if (moveDirection != Vector3.zero)
             {
                 lastMoveDirection = moveDirection;
-                transform.rotation = Quaternion.LookRotation(lastMoveDirection);
+                Quaternion targetRotation = Quaternion.LookRotation(lastMoveDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15f * Time.deltaTime); // Smoothly rotate towards movement direction
             }
         }
     }

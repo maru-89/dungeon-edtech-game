@@ -15,6 +15,7 @@ TagManager:
   - GemSocket
   - Ground
   - 'DisplayItem '
+  - Coin
   layers:
   - Default
   - TransparentFX

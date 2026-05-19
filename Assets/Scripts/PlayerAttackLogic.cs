@@ -5,7 +5,7 @@ public class PlayerAttackLogic : MonoBehaviour
 {
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private int attackDamage = 1;
-    [SerializeField] private float knockbackForce = 1.5f;
+    [SerializeField] private float knockbackForce = 5f;
     //[SerializeField] private LayerMask enemyLayer;
 
     private PlayerInput playerInput;
@@ -41,36 +41,24 @@ public class PlayerAttackLogic : MonoBehaviour
 
     public void Attack()
     {
-        // Check for enemies in range
         Collider[] weaponHits = Physics.OverlapSphere(transform.position, attackRange);
 
-        // Damage each enemy hit
         foreach (Collider entity in weaponHits)
         {
-            EnemyLogic enemyHealth = entity.GetComponent<EnemyLogic>();
-            if (enemyHealth != null)
+            EnemyLogic enemy = entity.GetComponent<EnemyLogic>();
+            if (enemy != null)
             {
-                enemyHealth.TakeDamage(attackDamage);
-                Rigidbody enemyRb = entity.GetComponent<Rigidbody>(); // Get the enemy's Rigidbody for knockback
-                AttackKnockback(enemyRb, knockbackForce);
-
-                Debug.Log("Player attacked enemy, dealing damage and knockback");
+                enemy.TakeDamage(attackDamage);
+                Vector3 knockbackDirection = (entity.transform.position - transform.position).normalized;
+                enemy.ApplyKnockback(knockbackDirection, knockbackForce);
             }
+
             PotLogic pot = entity.GetComponent<PotLogic>();
             if (pot != null)
             {
                 pot.OnWeaponHit(transform.forward);
             }
         }
-    }
-
-    public void AttackKnockback(Rigidbody rb, float knockbackForce)
-    {
-        if (rb == null) return;
-
-        Vector3 knockbackDirection = (rb.transform.position - transform.position).normalized;
-        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
-
     }
 
     private void OnDrawGizmosSelected()
