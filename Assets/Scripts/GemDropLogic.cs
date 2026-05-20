@@ -36,4 +36,9 @@ public class GemDropLogic : ItemDropLogic
             }
         }
     }
+
+    public GemSO GetGemData()
+    {
+        return gemData;
+    }
 }

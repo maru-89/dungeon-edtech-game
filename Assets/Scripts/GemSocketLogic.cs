@@ -71,4 +71,18 @@ public class GemSocketLogic : MonoBehaviour
             Debug.Log("Incorrect gem inserted.");
         }
     }
+
+    public void OnGemPlaced(GemSO gem)
+    {
+        TryInsertGem(gem);
+        if (isFilled)
+        {
+            // remove from player inventory
+            PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.RemoveItem(gem);
+            }
+        }
+    }
 }
