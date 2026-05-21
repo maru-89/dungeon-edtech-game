@@ -149,6 +149,52 @@ public class InventoryLogic : MonoBehaviour
         spawnedItems.Add(item);
     }
 
+    public void OpenDoorInteraction(Transform anchor)
+    {
+        spawnedHand = Instantiate(handPrefab, anchor.position, anchor.rotation);
+        HandLogic handLogic = spawnedHand.GetComponent<HandLogic>();
+        if (handLogic != null)
+        {
+            handLogic.Initialise(playerInput.actions["Player/Move"], playerInput.actions["Player/Interact"], inventoryAnchor.position.y, transform, this);
+
+            if (gemHold.childCount > 0)
+            {
+                GameObject carriedGem = gemHold.GetChild(0).gameObject;
+                carriedGem.transform.SetParent(spawnedHand.transform);
+                carriedGem.transform.localPosition = Vector3.zero;
+
+                foreach (Collider col in carriedGem.GetComponents<Collider>())
+                {
+                    if (col.isTrigger) col.enabled = true;
+                }
+
+                handLogic.SetHeldGem(carriedGem);
+                handLogic.SwitchToDoorPlane(anchor.transform);
+            }
+        }
+    }
+
+    public void CloseDoorInteraction()
+    {
+        if (spawnedHand != null)
+        {
+            HandLogic handLogic = spawnedHand.GetComponent<HandLogic>();
+            if (handLogic != null && handLogic.IsHoldingGem())
+            {
+                GameObject heldGem = handLogic.GetHeldGem();
+                heldGem.transform.SetParent(gemHold);
+                heldGem.transform.localPosition = Vector3.zero;
+
+                foreach (Collider col in heldGem.GetComponents<Collider>())
+                {
+                    if (col.isTrigger) col.enabled = false;
+                }
+            }
+            Destroy(spawnedHand);
+            spawnedHand = null;
+        }
+    }
+
     void OnDestroy()
     {
         DestroyInventoryItems(); // Ensure any remaining items are cleaned up if the player object is destroyed

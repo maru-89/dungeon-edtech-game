@@ -9,10 +9,11 @@ public class CameraLogic : MonoBehaviour
 
     private bool isInventoryOpen = false;
     private bool isLerping = false;
+    private bool isDoorMode = false;
 
     void LateUpdate()
     {
-        if (!isInventoryOpen && !isLerping)
+        if (!isInventoryOpen && !isLerping && !isDoorMode)
         {
             transform.position = defaultAnchor.position;
         }
@@ -27,8 +28,9 @@ public class CameraLogic : MonoBehaviour
         StartCoroutine(LerpToPosition(target));
     }
 
-    private IEnumerator LerpToPosition(Transform target)
+    public IEnumerator LerpToPosition(Transform target)
     {
+        Debug.Log("Starting camera lerp to " + target.name);
         isLerping = true;
         Vector3 startPosition = transform.position;
         Quaternion startRotation = transform.rotation;
@@ -51,5 +53,17 @@ public class CameraLogic : MonoBehaviour
     public bool IsLerping()
     {
         return isLerping;
+    }
+
+    public void LerpToDoorPosition(Transform anchor)
+    {
+        isDoorMode = true;
+        StartCoroutine(LerpToPosition(anchor));
+    }
+
+    public void ReturnToDefault()
+    {
+        isDoorMode = false;
+        StartCoroutine(LerpToPosition(defaultAnchor));
     }
 }

@@ -19,6 +19,9 @@ public class HandLogic : MonoBehaviour
     private Material redMaterial;
     private Material greenMaterial;
     private Transform inventoryAnchor;
+
+    private bool isDoorMode = false;
+    private Transform doorTransform;
     
 
 
@@ -53,26 +56,46 @@ public class HandLogic : MonoBehaviour
     void MoveHand()
     {
         Vector2 input = moveAction.ReadValue<Vector2>();
-        Vector3 forward = playerTransform.forward;
-        Vector3 right = playerTransform.right;
-        forward.y = 0;
-        right.y = 0;
-        
-        Vector3 movement = (forward * input.y + right * input.x) * moveSpeed * Time.deltaTime;
-        Vector3 newPosition = transform.position + movement;
 
-        Vector3 offset = newPosition - inventoryAnchor.position;
-        offset.y = 0;
-        if (offset.magnitude > maxHandRadius)
+        if (isDoorMode)
         {
-            offset = offset.normalized * maxHandRadius;
-        }
-        newPosition = inventoryAnchor.position + offset;
-        newPosition.y = planeY;
-        transform.position = newPosition;
+            Vector3 movement = (doorTransform.right * -input.x + doorTransform.up * input.y) * moveSpeed * Time.deltaTime;
+            Vector3 newPosition = transform.position + movement;
 
-        newPosition.y = planeY;
-        transform.position = newPosition;
+            // Clamp to door plane radius
+            Vector3 offset = newPosition - doorTransform.position;
+            Vector3 localOffset = new Vector3(
+                Vector3.Dot(offset, doorTransform.right),
+                Vector3.Dot(offset, doorTransform.up),
+                0);
+            if (localOffset.magnitude > maxHandRadius)
+            {
+                localOffset = localOffset.normalized * maxHandRadius;
+            }
+            transform.position = doorTransform.position + 
+                doorTransform.right * localOffset.x + 
+                doorTransform.up * localOffset.y;
+        }
+        else
+        {
+            Vector3 forward = playerTransform.forward;
+            Vector3 right = playerTransform.right;
+            forward.y = 0;
+            right.y = 0;
+            
+            Vector3 movement = (forward * input.y + right * input.x) * moveSpeed * Time.deltaTime;
+            Vector3 newPosition = transform.position + movement;
+
+            Vector3 offset = newPosition - inventoryAnchor.position;
+            offset.y = 0;
+            if (offset.magnitude > maxHandRadius)
+            {
+                offset = offset.normalized * maxHandRadius;
+            }
+            newPosition = inventoryAnchor.position + offset;
+            newPosition.y = planeY;
+            transform.position = newPosition;
+        }
     }
 
     void TryGrab()
@@ -149,5 +172,12 @@ public class HandLogic : MonoBehaviour
         {
             SetHandColour(redMaterial);
         }
+    }
+
+    public void SwitchToDoorPlane(Transform door)
+    {
+        isDoorMode = true;
+        doorTransform = door;
+        planeY = transform.position.y; // lock current Y as the vertical centre
     }
 }

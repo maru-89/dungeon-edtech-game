@@ -17,7 +17,8 @@ public class DungeonDoorLogic : MonoBehaviour
     [SerializeField] private float arcRadius = 1.5f;
     [SerializeField] private float arcAngle = 90f;
     [SerializeField] private Transform socketAnchor; // assign in inspector, this is the point around which the sockets will be arranged
-
+    [SerializeField] private Transform cameraAnchor; // assign in inspector, this is the point from which the camera will look at the door when player approaches with gem
+    [SerializeField] private Transform doorInteractionAnchor; // assign in inspector, this is the point to which the handUI will spawn to place gems
     public void Initialise(VocabWordSO vocabWordSO)
     {
         requiredGems = new List<ItemSO>(vocabWordSO.requiredGems);
@@ -60,5 +61,38 @@ public class DungeonDoorLogic : MonoBehaviour
         Debug.Log("All sockets filled, door unlocked!");
         transform.localScale = Vector3.zero;
         GameManager.Instance.OnDungeonDoorOpened(); // Notify GameManager that the door has been opened (win condition)
+    }
+
+    void OnTriggerEnter(Collider other)
+    {        
+        Debug.Log($"Trigger entered by: {other.name} tag: {other.tag}");
+        if (other.CompareTag("Player"))
+        {
+            InventoryLogic inventoryLogic = other.GetComponent<InventoryLogic>();
+            if (inventoryLogic != null && inventoryLogic.GemHold.childCount > 0)
+            {
+                other.GetComponent<CharacterController>().enabled = false;
+                other.GetComponent<PlayerMovement>().enabled = false;
+                Camera.main.GetComponent<CameraLogic>().LerpToDoorPosition (cameraAnchor);
+                inventoryLogic.OpenDoorInteraction(doorInteractionAnchor);
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<CharacterController>().enabled = true;
+            other.GetComponent<PlayerMovement>().enabled = true;
+
+            Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
+            
+            InventoryLogic inventoryLogic = other.GetComponent<InventoryLogic>();
+            if (inventoryLogic != null)
+            {
+                inventoryLogic.CloseDoorInteraction();
+            }
+        }
     }
 }
