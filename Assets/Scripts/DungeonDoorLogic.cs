@@ -19,6 +19,9 @@ public class DungeonDoorLogic : MonoBehaviour
     [SerializeField] private Transform socketAnchor; // assign in inspector, this is the point around which the sockets will be arranged
     [SerializeField] private Transform cameraAnchor; // assign in inspector, this is the point from which the camera will look at the door when player approaches with gem
     [SerializeField] private Transform doorInteractionAnchor; // assign in inspector, this is the point to which the handUI will spawn to place gems
+
+    private bool playerInRange = false; // Track if player is in range to interact with the door, to control camera lerping and hand UI
+    public bool PlayerInRange => playerInRange;
     public void Initialise(VocabWordSO vocabWordSO)
     {
         requiredGems = new List<ItemSO>(vocabWordSO.requiredGems);
@@ -68,11 +71,13 @@ public class DungeonDoorLogic : MonoBehaviour
         Debug.Log($"Trigger entered by: {other.name} tag: {other.tag}");
         if (other.CompareTag("Player"))
         {
+            playerInRange = true;
             InventoryLogic inventoryLogic = other.GetComponent<InventoryLogic>();
-            if (inventoryLogic != null && inventoryLogic.GemHold.childCount > 0)
+            if (inventoryLogic != null && inventoryLogic.GemHold.childCount > 0 && !inventoryLogic.IsInventoryOpen)
             {
                 other.GetComponent<CharacterController>().enabled = false;
                 other.GetComponent<PlayerMovement>().enabled = false;
+
                 Camera.main.GetComponent<CameraLogic>().LerpToDoorPosition (cameraAnchor);
                 inventoryLogic.OpenDoorInteraction(doorInteractionAnchor);
             }
@@ -83,16 +88,22 @@ public class DungeonDoorLogic : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            playerInRange = false;
             other.GetComponent<CharacterController>().enabled = true;
             other.GetComponent<PlayerMovement>().enabled = true;
 
             Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
-            
             InventoryLogic inventoryLogic = other.GetComponent<InventoryLogic>();
             if (inventoryLogic != null)
             {
                 inventoryLogic.CloseDoorInteraction();
             }
         }
+    }
+
+    public void TriggerDoorInteraction(InventoryLogic inventoryLogic)
+    {
+        Camera.main.GetComponent<CameraLogic>().LerpToDoorPosition(cameraAnchor);
+        inventoryLogic.OpenDoorInteraction(doorInteractionAnchor);
     }
 }

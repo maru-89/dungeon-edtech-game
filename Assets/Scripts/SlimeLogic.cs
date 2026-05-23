@@ -48,6 +48,7 @@ public class SlimeLogic : EnemyLogic
 
     void Update()
     {
+        if (isDead) return;
         if (isKnockedBack && Time.time >= knockbackResetTime)
         {
             isKnockedBack = false;

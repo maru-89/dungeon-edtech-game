@@ -14,6 +14,7 @@ public class InventoryLogic : MonoBehaviour
 
     private List<GameObject> spawnedItems = new List<GameObject>();
     private bool isOpen = false;
+    private bool isDoorInteractionOpen = false;
     private CharacterController controller;
 
     [SerializeField] private GameObject handPrefab; // Prefab for the UI hand that will be used to select and drag gems in the inventory 
@@ -29,6 +30,8 @@ public class InventoryLogic : MonoBehaviour
     public Material HandGreenMaterial => handGreenMaterial;
     public Transform GemHold => gemHold;
 
+    public bool IsInventoryOpen => isOpen;
+
 
     void Awake()
     {
@@ -42,7 +45,7 @@ public class InventoryLogic : MonoBehaviour
 
     void Update()
     {
-        if (inventoryAction.WasPressedThisFrame() && !cameraLogic.IsLerping())
+        if (inventoryAction.WasPressedThisFrame() && !cameraLogic.IsLerping() && !isDoorInteractionOpen)
         {
             isOpen = !isOpen;
             cameraLogic.ToggleCameraPosition();
@@ -58,6 +61,13 @@ public class InventoryLogic : MonoBehaviour
                 DestroyInventoryItems();
                 controller.enabled = true; // re-enable character controller when inventory is closed
                 playerMovement.enabled = true; // re-enable player movement script when inventory is closed
+
+                // check if player is in door range with a gem
+                DungeonDoorLogic door = FindAnyObjectByType<DungeonDoorLogic>();
+                if (door != null && door.PlayerInRange && gemHold.childCount > 0)
+                {
+                    door.TriggerDoorInteraction(this);
+                }
             }
         }
     }
@@ -151,6 +161,7 @@ public class InventoryLogic : MonoBehaviour
 
     public void OpenDoorInteraction(Transform anchor)
     {
+        isDoorInteractionOpen = true;
         spawnedHand = Instantiate(handPrefab, anchor.position, anchor.rotation);
         HandLogic handLogic = spawnedHand.GetComponent<HandLogic>();
         if (handLogic != null)
@@ -176,6 +187,10 @@ public class InventoryLogic : MonoBehaviour
 
     public void CloseDoorInteraction()
     {
+        isDoorInteractionOpen = false;
+        controller.enabled = true;
+        GetComponent<PlayerMovement>().enabled = true;
+
         if (spawnedHand != null)
         {
             HandLogic handLogic = spawnedHand.GetComponent<HandLogic>();

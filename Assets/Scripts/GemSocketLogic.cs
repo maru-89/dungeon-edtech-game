@@ -59,30 +59,79 @@ public class GemSocketLogic : MonoBehaviour
             return;
         }
 
-        if (requiredGem == gem) 
+        if (requiredGem == gem) // correct gem inserted
         {
             isFilled = true;
             redVisual.enabled = false;
             greenVisual.enabled = true;
+            GetComponent<Collider>().enabled = false;
+
+            // Disable trigger on placed gem so it can't be picked up
+            GemDropLogic gemChild = GetComponentInChildren<GemDropLogic>();
+            if (gemChild != null)
+            {
+                foreach (Collider col in gemChild.GetComponents<Collider>())
+                {
+                    if (col.isTrigger) col.enabled = false;
+                }
+            }
+
             parentDoor.OnSocketFilled();
+            
+            // Return to overhead view
+            InventoryLogic inventoryLogic = FindAnyObjectByType<InventoryLogic>();
+            if (inventoryLogic != null)
+            {
+                inventoryLogic.CloseDoorInteraction();
+            }
+            Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
         }
         else
         {
             Debug.Log("Incorrect gem inserted.");
+            // Find the gem child specifically
+            GemDropLogic gemChild = GetComponentInChildren<GemDropLogic>();
+            if (gemChild != null)
+            {
+                GameObject gemObject = gemChild.gameObject;
+                gemObject.transform.SetParent(null);
+                Rigidbody rb = gemObject.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = false;
+                    Vector3 spitDirection = (-transform.forward + Vector3.up).normalized;
+                    rb.AddForce(spitDirection * 5f, ForceMode.Impulse);
+                    rb.AddTorque(Random.insideUnitSphere * 5f, ForceMode.Impulse);
+                }
+
+                PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
+                if (playerInventory != null)
+                {
+                    playerInventory.RemoveItem(gem); // Ensure the incorrect gem is removed from inventory
+                }
+
+                InventoryLogic inventoryLogic = FindAnyObjectByType<InventoryLogic>();
+                if (inventoryLogic != null)
+                {
+                    inventoryLogic.CloseDoorInteraction();
+                }
+                Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
+            }
         }
     }
 
-    public void OnGemPlaced(GemSO gem)
+    public bool OnGemPlaced(GemSO gem)
     {
         TryInsertGem(gem);
         if (isFilled)
         {
-            // remove from player inventory
             PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
             if (playerInventory != null)
             {
                 playerInventory.RemoveItem(gem);
             }
+            return true;
         }
-    }
+        return false;
+}
 }

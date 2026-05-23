@@ -42,12 +42,20 @@ public class HandLogic : MonoBehaviour
     {
         MoveHand();
         if (interactAction.WasPressedThisFrame())
-{
-        if (heldGem == null)
-            TryGrab();
-        else
-            TryPlace();
-}
+        {
+            if (isDoorMode && heldGem == null)
+            {
+                inventoryLogic.CloseDoorInteraction();
+            }
+            else if (heldGem == null)
+            {
+                TryGrab();
+            }
+            else
+            {
+                TryPlace();
+            }
+        }
     }
 
     public bool IsHoldingGem() => heldGem != null;
@@ -109,6 +117,7 @@ public class HandLogic : MonoBehaviour
             if (gem != null)
             {
                 heldGem = hit.gameObject;
+                heldGem.GetComponent<Rigidbody>().isKinematic = true; // make the gem follow the hand without physics interference
                 heldGem.transform.SetParent(transform);
                 heldGem.transform.localPosition = Vector3.zero;
                 SetHandColour(greenMaterial);
@@ -129,21 +138,35 @@ public class HandLogic : MonoBehaviour
             GemSocketLogic socket = hit.GetComponent<GemSocketLogic>();
             if (socket != null)
             {
-                heldGem.transform.SetParent(socket.transform);
-                heldGem.transform.localPosition = Vector3.zero;
-                socket.OnGemPlaced(heldGem.GetComponent<GemDropLogic>().GetGemData());
-                heldGem = null;
+                GameObject gemToPlace = heldGem;
+                GemSO gemData = gemToPlace.GetComponent<GemDropLogic>().GetGemData();
+
+                gemToPlace.transform.SetParent(socket.transform);
+                gemToPlace.transform.localPosition = Vector3.zero;
+
+                heldGem = null; // clear before OnGemPlaced fires CloseDoorInteraction
                 SetHandColour(redMaterial);
+                socket.OnGemPlaced(gemData);
                 return;
             }
         }
-
         // No socket found, drop in world
+        heldGem.GetComponent<Rigidbody>().isKinematic = false;
         heldGem.transform.SetParent(null);
         heldGem.transform.position = transform.position;
         inventoryLogic.TrackSpawnedItem(heldGem);
+
+        GemSO droppedGemData  = heldGem.GetComponent<GemDropLogic>().GetGemData();
+        PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
+        if (playerInventory != null)
+        {
+            playerInventory.RemoveItem(droppedGemData); // Ensure the dropped gem is removed from inventory
+        }
+
         heldGem = null;
         SetHandColour(redMaterial);
+        inventoryLogic.CloseDoorInteraction();
+        Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
     }
 
     void SetHandColour(Material mat)
