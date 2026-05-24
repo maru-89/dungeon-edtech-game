@@ -44,6 +44,8 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private GameObject potPrefab;
     [SerializeField] private List<GameObject> enemyPrefabs; // List of enemy types to spawn
 
+    private float roomScale; // For minimap calculations
+
 
     IEnumerator LogAfterGeneration()
     {
@@ -61,6 +63,7 @@ public class DungeonManager : MonoBehaviour
 
     void Start()
     {
+        roomScale = MinimapManager.Instance.GetOverlayScale(); // Cache the room scale
         StartCoroutine(LogAfterGeneration());
         InitialiseDungeon();
     }
@@ -96,6 +99,10 @@ public class DungeonManager : MonoBehaviour
                 maxPotsPerRoom
             );
         }
+        
+        Debug.Log($"MinimapManager instance: {MinimapManager.Instance != null}");
+        MinimapManager.Instance.GenerateOverlays(); // Generate minimap overlay
+        MinimapManager.Instance.RevealRoom(Vector2Int.zero); // Reveal the center room
     }
 
     void SetDungeonSeed()
@@ -137,6 +144,11 @@ public class DungeonManager : MonoBehaviour
                 dungeonMap.ContainsKey(pos + Vector2Int.right)  // X+ exists? (DoorRight)
             );
         }
+    }
+
+    public Vector2Int GetGridPositionFromWorld(Vector3 worldPosition)
+    {
+        return new Vector2Int(Mathf.RoundToInt(worldPosition.x / roomScale), Mathf.RoundToInt(worldPosition.z / roomScale));
     }
 
     public GemSO GetRequiredDrop()

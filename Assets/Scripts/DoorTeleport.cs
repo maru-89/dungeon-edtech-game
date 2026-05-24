@@ -27,14 +27,13 @@ public class DoorTeleport : MonoBehaviour
 
     private void Teleport(Vector3 offset)
     {
-        // 1. Disable the controller so it stops fighting the transform
-        controller.enabled = false;
-
-        // 2. Move the player
-        transform.position += offset;
-
-        // 3. Re-enable the controller
-        controller.enabled = true;
+        controller.enabled = false; // Disable the controller to stop fighting the teleport
+        transform.position += offset; // Teleport
+        controller.enabled = true; // Re-renable the controller
+        
+        Vector2Int newGridPos = DungeonManager.Instance.GetGridPositionFromWorld(transform.position);
+        Debug.Log($"Teleported to grid position: {newGridPos}");
+        MinimapManager.Instance.RevealRoom(newGridPos);
         
         Debug.Log("Teleported to: " + transform.position);
     }

@@ -16,6 +16,7 @@ TagManager:
   - Ground
   - 'DisplayItem '
   - Coin
+  - Minimap
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - Walls
   - Floor
   - Enemy
-  - 
+  - Minimap
   - 
   - 
   - 
