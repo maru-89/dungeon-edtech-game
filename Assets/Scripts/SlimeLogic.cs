@@ -145,7 +145,7 @@ public class SlimeLogic : EnemyLogic
         if (isKnockedBack) return;
         
         isKnockedBack = true;
-        knockbackResetTime = Time.time + 0.5f;
+        knockbackResetTime = Time.time + 0.1f;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(direction * force, ForceMode.Impulse);
     }

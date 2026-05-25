@@ -3,13 +3,23 @@ using UnityEngine;
 public class PotLogic : MonoBehaviour
 {
     [SerializeField] private PotSO potData;
+
+    [SerializeField] private Material defaultMaterial;
+    [SerializeField] private Material interactabletMaterial;
     
     private bool isThrown = false;
+    private bool isBroken = false;
     private Rigidbody rb;
+
+    private MeshRenderer currentRenderer;
+    private bool isHighlighted = false;
+
+
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        currentRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
     // Called by player interaction
@@ -37,25 +47,63 @@ public class PotLogic : MonoBehaviour
         rb.isKinematic = false;
         transform.SetParent(null);
         rb.AddForce(throwForce, ForceMode.Impulse);
+        // Spin forward in throw direction
+        Vector3 spinAxis = Vector3.Cross(throwForce.normalized, -Vector3.up);
+        rb.AddTorque(spinAxis * (throwForce.magnitude / 2f), ForceMode.Impulse);
     }
 
     // Break on weapon hit via this public method
     public void OnWeaponHit(Vector3 hitDirection)
     {
+        if (isBroken) return;
+        isBroken = true;
         Break(hitDirection);
     }
 
     // Break on landing after throw
     void OnCollisionEnter(Collision collision)
     {
+        if (isBroken) return;
         if (isThrown)
         {
+            isBroken = true;
             Break();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Logic for changing ht pot material to show its interactable
+        if (isHighlighted) return;
+        if (other.CompareTag("Player") && currentRenderer != null)
+        {
+            currentRenderer.material = interactabletMaterial;
+            isHighlighted = true;
+        }
+        else
+        {
+            Debug.Log("No renderer found.");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        // Logic for changing ht pot material back to default
+        if (!isHighlighted) return;
+        if (other.CompareTag("Player") && currentRenderer != null)
+        {
+            currentRenderer.material = defaultMaterial;
+            isHighlighted = false;
+        }
+        else
+        {
+            Debug.Log("No renderer found.");
         }
     }
 
     void Break(Vector3 hitDirection = default)
     {
+        Debug.Log("Pot broken!");
         ItemSO drop = DungeonManager.Instance.GetDrop(potData);
         if (drop != null)
         {
