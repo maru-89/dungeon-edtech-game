@@ -14,6 +14,7 @@ public class InventoryLogic : MonoBehaviour
 
     private List<GameObject> spawnedItems = new List<GameObject>();
     private bool isOpen = false;
+    private bool inventoryClosedThisFrame = false;
     private bool isDoorInteractionOpen = false;
     private CharacterController controller;
 
@@ -45,7 +46,8 @@ public class InventoryLogic : MonoBehaviour
 
     void Update()
     {
-        if (inventoryAction.WasPressedThisFrame() && !cameraLogic.IsLerping() && !isDoorInteractionOpen)
+        inventoryClosedThisFrame = false;
+        if (inventoryAction.WasPressedThisFrame() && !cameraLogic.IsLerping() && !isDoorInteractionOpen && !inventoryClosedThisFrame)
         {
             isOpen = !isOpen;
             cameraLogic.ToggleCameraPosition();
@@ -58,16 +60,7 @@ public class InventoryLogic : MonoBehaviour
             }
             else
             {
-                DestroyInventoryItems();
-                controller.enabled = true; // re-enable character controller when inventory is closed
-                playerMovement.enabled = true; // re-enable player movement script when inventory is closed
-
-                // check if player is in door range with a gem
-                DungeonDoorLogic door = FindAnyObjectByType<DungeonDoorLogic>();
-                if (door != null && door.PlayerInRange && gemHold.childCount > 0)
-                {
-                    door.TriggerDoorInteraction(this);
-                }
+                CloseInventory();
             }
         }
     }
@@ -123,6 +116,24 @@ public class InventoryLogic : MonoBehaviour
 
             spawnedItems.Add(spawnedItem);
         }
+    }
+
+    public void CloseInventory()
+    {
+        inventoryClosedThisFrame = true;
+        isOpen = false;
+        Debug.Log($"CloseInventory called, isOpen: {isOpen}");
+        cameraLogic.ToggleCameraPosition();
+        DestroyInventoryItems();
+        controller.enabled = true; // re-enable character controller when inventory is closed
+        playerMovement.enabled = true; // re-enable player movement script when inventory is closed
+
+        // check if player is in door range with a gem
+        DungeonDoorLogic door = FindAnyObjectByType<DungeonDoorLogic>();
+        if (door != null && door.PlayerInRange && gemHold.childCount > 0)
+        {
+            door.TriggerDoorInteraction(this);
+        };
     }
 
     void DestroyInventoryItems()

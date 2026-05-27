@@ -121,6 +121,7 @@ public class HandLogic : MonoBehaviour
                 heldGem.transform.SetParent(transform);
                 heldGem.transform.localPosition = Vector3.zero;
                 SetHandColour(greenMaterial);
+                inventoryLogic.CloseInventory(); // Automatically close inventory on successful grab
                 break;
             }
         }
@@ -154,7 +155,6 @@ public class HandLogic : MonoBehaviour
         heldGem.GetComponent<Rigidbody>().isKinematic = false;
         heldGem.transform.SetParent(null);
         heldGem.transform.position = transform.position;
-        inventoryLogic.TrackSpawnedItem(heldGem);
 
         GemSO droppedGemData  = heldGem.GetComponent<GemDropLogic>().GetGemData();
         PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
@@ -165,8 +165,15 @@ public class HandLogic : MonoBehaviour
 
         heldGem = null;
         SetHandColour(redMaterial);
-        inventoryLogic.CloseDoorInteraction();
-        Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
+        if (isDoorMode)
+        {
+            inventoryLogic.CloseDoorInteraction();
+            Camera.main.GetComponent<CameraLogic>().ReturnToDefault();
+        }
+        else
+        {
+            inventoryLogic.TrackSpawnedItem(heldGem);
+        }
     }
 
     void SetHandColour(Material mat)

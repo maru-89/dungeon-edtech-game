@@ -21,6 +21,7 @@ public class CameraLogic : MonoBehaviour
 
     public void ToggleCameraPosition()
     {
+        Debug.Log($"ToggleCameraPosition called, isInventoryOpen: {isInventoryOpen}");
         if (isLerping) return;
 
         isInventoryOpen = !isInventoryOpen;
