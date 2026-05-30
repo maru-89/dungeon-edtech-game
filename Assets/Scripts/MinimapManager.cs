@@ -7,7 +7,7 @@ public class MinimapManager : MonoBehaviour
 
     [SerializeField] private GameObject overlayPrefab; // black plane prefab
     [SerializeField] private float overlayHeight = 20f; // height above rooms on minimap camera layer
-    [SerializeField] private float overlayScale = 100f; // should match room size
+    [SerializeField] private float overlayScale = 50f; // should match room size
     [SerializeField] private Color visitedRoomColor = new Color(0.3f, 0.3f, 0.3f);
 
     public float GetOverlayScale() => overlayScale;
@@ -46,10 +46,10 @@ public class MinimapManager : MonoBehaviour
         Debug.Log($"RevealRoom called for {gridPosition}, overlays count: {minimapOverlays.Count}");
         if (minimapOverlays.TryGetValue(gridPosition, out GameObject overlay))
         {
-            Debug.Log($"Found overlay, changing color");
-            overlay.GetComponent<Renderer>().material.color = visitedRoomColor;
-            //Destroy(overlay);
-            //minimapOverlays.Remove(gridPosition);
+            Debug.Log($"Found overlay, deleting");
+            //overlay.GetComponent<Renderer>().material.color = visitedRoomColor;
+            Destroy(overlay);
+            minimapOverlays.Remove(gridPosition);
         }
         else
         {

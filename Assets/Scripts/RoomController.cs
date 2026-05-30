@@ -5,8 +5,8 @@ public class RoomController : MonoBehaviour
 {
     public Vector2Int gridPosition;
     [SerializeField] private Transform spawnCenter;    
-    private int[] oddOffsets = { -45, -30, -15, -3, 3, 15, 30, 45 };
-    private int[] evenOffsets = { -40, -20, 0, 20, 40 };
+    private int[] oddOffsets = { -35, -25, -15, -5, 5, 15, 25, 35 };
+    private int[] evenOffsets = { -30, -15, 0, 15, 30 };
 
     void Awake()
     {
@@ -70,7 +70,7 @@ public class RoomController : MonoBehaviour
             if (usedPositions.Contains(gridPos)) continue;
             
             usedPositions.Add(gridPos);
-            Vector3 position = spawnCenter.position + new Vector3(xOffset, 0, zOffset);
+            Vector3 position = spawnCenter.TransformPoint(new Vector3(xOffset, 0, zOffset));
             Instantiate(potPrefab, position, Quaternion.identity);
             Debug.Log($"Spawning contents in room: {gameObject.name} at {gridPosition}");
             potsSpawned++;
@@ -92,7 +92,7 @@ public class RoomController : MonoBehaviour
             if (usedPositions.Contains(gridPos)) continue;
             
             usedPositions.Add(gridPos);
-            Vector3 position = spawnCenter.position + new Vector3(xOffset, 10, zOffset);
+            Vector3 position = spawnCenter.TransformPoint(new Vector3(xOffset, 0, zOffset));
             Instantiate(enemyPrefab, position, Quaternion.identity);
             enemiesSpawned++;
         }
