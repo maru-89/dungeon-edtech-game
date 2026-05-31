@@ -8,7 +8,7 @@ public class EnemyLogic : MonoBehaviour
 
     public virtual void Die(float coinDropChance)
     {
-        ItemSO drop = DungeonManager.Instance.GetEnemyDrop(coinDropChance);
+        ItemSO drop = DungeonManagerLocator.Instance.GetEnemyDrop(coinDropChance);
         if (drop != null)
         {
             GameObject droppedItem = Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);

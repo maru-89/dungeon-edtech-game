@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class DungeonManager : MonoBehaviour 
+public class DungeonManager : MonoBehaviour, IDungeonManager
 {
     
     // The singleton instance
@@ -45,6 +45,9 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private List<GameObject> enemyPrefabs; // List of enemy types to spawn
 
     private float roomScale; // For minimap calculations
+
+    public void OnPotBroken() { } // To satisfy the interface
+    public void OnGemCollected() { } // To satisfy the interface
 
 
     IEnumerator LogAfterGeneration()
@@ -235,6 +238,12 @@ public class DungeonManager : MonoBehaviour
             }
         }
         return furthestRoom;
+    }
+
+    void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
     
     // Expose maxRooms and roomCount via properties

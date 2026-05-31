@@ -189,6 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2677696193450405317}
+  - component: {fileID: 5844431509467765199}
   m_Layer: 0
   m_Name: TutorialArrow
   m_TagString: Untagged
@@ -205,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 6849473891418376522}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 5.1801686, z: -5.2495356}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -213,3 +214,18 @@ Transform:
   - {fileID: 2470385428804035725}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &5844431509467765199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849473891418376522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 374eccf94cf4508479b3667baba27271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialArrowLogic
+  rotationSpeed: 5
+  bobHeight: 0.5
+  bobSpeed: 2

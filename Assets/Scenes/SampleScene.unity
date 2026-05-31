@@ -409,7 +409,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 503
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2059,9 +2059,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MinimapManager
   overlayPrefab: {fileID: 4571974986010448182, guid: 4c3590ffdd1a4c346945b4479802b428, type: 3}
-  overlayHeight: 20
-  overlayScale: 100
-  visitedRoomColor: {r: 0, g: 0, b: 0, a: 1}
+  overlayHeight: 10
+  overlayScale: 50
+  visitedRoomColor: {r: 0.022454187, g: 0.8, b: 0, a: 0}
 --- !u!4 &1678867575
 Transform:
   m_ObjectHideFlags: 0
@@ -2477,7 +2477,7 @@ Transform:
   m_GameObject: {fileID: 2061630946}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5735764, y: -0, z: -0, w: 0.8191521}
-  m_LocalPosition: {x: 0, y: 30, z: -10}
+  m_LocalPosition: {x: 0, y: 15, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 943960423}
-  offset: {x: 0, y: 30, z: -10}
+  offset: {x: 0, y: 15, z: -5}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 3f006a2586510b34cba1347b17e9bca6, type: 3}
   m_Name: HeartDropSO
   m_EditorClassIdentifier: Assembly-CSharp::HeartSO
-  itemName: Heart Drop
+  itemName: heart drop
   itemID: 0
   itemIcon: {fileID: 0}
   itemPrefab: {fileID: 6246095042746125617, guid: 108e5c464193f3d43a671f5633a907d9, type: 3}
-  healAmount: 1
+  healAmount: 2

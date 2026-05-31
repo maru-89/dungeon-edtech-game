@@ -104,7 +104,9 @@ public class PotLogic : MonoBehaviour
     void Break(Vector3 hitDirection = default)
     {
         Debug.Log("Pot broken!");
-        ItemSO drop = DungeonManager.Instance.GetDrop(potData);
+        Debug.Log($"DungeonManager: {DungeonManager.Instance}, TutorialDungeonManager: {TutorialDungeonManager.Instance}");
+
+        ItemSO drop = DungeonManagerLocator.Instance.GetDrop(potData);
         if (drop != null)
         {
             GameObject droppedItem = Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);
@@ -125,6 +127,7 @@ public class PotLogic : MonoBehaviour
                 dropRb.AddForce(force + Vector3.up * 3f, ForceMode.Impulse);
                 dropRb.AddTorque(randomSpin, ForceMode.Impulse);
             }
+            DungeonManagerLocator.Instance.OnPotBroken(); // For tutorial
         }
         Destroy(gameObject);
     }
