@@ -46,10 +46,6 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
 
     private float roomScale; // For minimap calculations
 
-    public void OnPotBroken() { } // To satisfy the interface
-    public void OnGemCollected() { } // To satisfy the interface
-
-
     IEnumerator LogAfterGeneration()
     {
         yield return new WaitForSeconds(5f);

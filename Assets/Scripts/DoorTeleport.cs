@@ -30,6 +30,10 @@ public class DoorTeleport : MonoBehaviour
         controller.enabled = false; // Disable the controller to stop fighting the teleport
         transform.position += offset; // Teleport
         controller.enabled = true; // Re-renable the controller
+
+        // For tutorial
+        TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+        tutorial?.OnDoorTeleport();
         
         Vector2Int newGridPos = DungeonManager.Instance.GetGridPositionFromWorld(transform.position);
         Debug.Log($"Teleported to grid position: {newGridPos}");

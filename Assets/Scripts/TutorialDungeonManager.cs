@@ -16,8 +16,9 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
     [SerializeField] private DungeonDoorLogic dungeonDoor;
 
     [SerializeField] private TutorialArrowLogic tutorialArrow;
-    [SerializeField] private Transform potTarget;
-    [SerializeField] private Transform doorTarget;
+    [SerializeField] private List<Transform> nextTargetList;
+
+    private bool teleported = false;
 
     private VocabWordSO selectedWord;
     private List<GemSO> remainingRequiredGems;
@@ -41,8 +42,11 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
     {
         InitialiseDungeon();
 
-        tutorialArrow.SetTarget(potTarget);
-        
+        if (nextTargetList != null && nextTargetList.Count > 0)
+        {
+            tutorialArrow.SetTarget(nextTargetList[0]);
+        }
+
         if (dungeonDoor != null)
         {
             dungeonDoor.Initialise(selectedWord);
@@ -109,17 +113,46 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
         if (gem != null)
         {
             tutorialArrow.SetTarget(gem.transform);
+            if (nextTargetList != null && nextTargetList.Count > 0)
+            {            
+                nextTargetList.RemoveAt(0);
+                CheckForNextTarget();
+            }
         }
     }
 
     public void OnGemCollected()
     {
-        tutorialArrow.SetTarget(doorTarget);
+        if (nextTargetList != null && nextTargetList.Count > 0)
+        {
+            tutorialArrow.SetTarget(nextTargetList[0]);
+            Debug.Log("Gem collected, moving arrow to next target: " + nextTargetList[0].name);
+        }
+    }
+
+    public void OnDoorTeleport()
+    {
+        if (nextTargetList != null && nextTargetList.Count > 0 && !teleported)
+        {            
+            nextTargetList.RemoveAt(0);
+            tutorialArrow.SetTarget(nextTargetList[0]);
+            teleported = true;
+
+            CheckForNextTarget();
+        }
     }
 
     void OnDestroy()
     {
         if (Instance == this)
             Instance = null;
+    }
+
+    void CheckForNextTarget()
+    {
+        if (nextTargetList == null || nextTargetList.Count == 0)
+        {
+            tutorialArrow.gameObject.SetActive(false); // Hide arrow if no more targets
+        }
     }
 }

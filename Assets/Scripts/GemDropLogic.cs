@@ -31,7 +31,9 @@ public class GemDropLogic : ItemDropLogic
             {
                 if (playerInventory.AddItem(gemData))
                 {
-                    DungeonManagerLocator.Instance?.OnGemCollected(); // For tutorial
+                    // For tutorial
+                    TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+                    tutorial?.OnGemCollected();
                     Destroy(gameObject);
                 }
             }

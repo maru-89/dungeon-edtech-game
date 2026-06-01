@@ -6,6 +6,4 @@ public interface IDungeonManager
     ItemSO GetDrop(PotSO potData);
     ItemSO GetEnemyDrop(float dropChance);
     List<ItemSO> GetRequiredGems();
-    void OnPotBroken();
-    void OnGemCollected();
 }

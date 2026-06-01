@@ -126,8 +126,10 @@ public class PotLogic : MonoBehaviour
                     
                 dropRb.AddForce(force + Vector3.up * 3f, ForceMode.Impulse);
                 dropRb.AddTorque(randomSpin, ForceMode.Impulse);
-            }
-            DungeonManagerLocator.Instance.OnPotBroken(); // For tutorial
+            } 
+            // For tutorial
+            TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+            tutorial?.OnPotBroken();
         }
         Destroy(gameObject);
     }
