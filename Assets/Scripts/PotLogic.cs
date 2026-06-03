@@ -107,6 +107,7 @@ public class PotLogic : MonoBehaviour
         Debug.Log($"DungeonManager: {DungeonManager.Instance}, TutorialDungeonManager: {TutorialDungeonManager.Instance}");
 
         ItemSO drop = DungeonManagerLocator.Instance.GetDrop(potData);
+        Debug.Log($"Drop result: {drop}");
         if (drop != null)
         {
             GameObject droppedItem = Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);

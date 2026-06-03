@@ -1,0 +1,7 @@
+<linker>
+  <assembly fullname="Assembly-CSharp">
+    <type fullname="GemSO" preserve="all" />
+    <type fullname="VocabWordSO" preserve="all" />
+    <type fullname="ItemSO" preserve="all" />
+  </assembly>
+</linker>

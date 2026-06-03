@@ -26,6 +26,7 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
     [SerializeField] private Transform inventoryZoomAnchor;
     [SerializeField] private GameObject tabKeyPromptUI;
     [SerializeField] private GameObject eKeyPromptUI;
+    [SerializeField] public List<GemSO> allGems; // This will be set from the inspector with all gems available in the game, used for random drops after required gems are exhausted
 
     private bool teleported = false;
 
@@ -58,6 +59,7 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
         if (dungeonDoor != null)
         {
+            Debug.Log($"Initialising door with word: {selectedWord.displayWord}, gems: {selectedWord.requiredGems.Count}");
             dungeonDoor.Initialise(selectedWord);
         }
     }
@@ -66,13 +68,16 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
     {
         selectedWord = currentPack.vocabWordList[0]; // always first word for tutorial
         remainingRequiredGems = new List<GemSO>(selectedWord.requiredGems);
+        Debug.Log($"Tutorial initialised, required gems: {remainingRequiredGems.Count}");
     }
 
     public GemSO GetRequiredDrop()
     {
+        Debug.Log($"GetRequiredDrop called, remaining: {remainingRequiredGems.Count}");
         if (remainingRequiredGems.Count > 0)
         {
             GemSO gem = remainingRequiredGems[SeededRandom.Next(0, remainingRequiredGems.Count)];
+            Debug.Log($"Dropping gem: {gem}");
             remainingRequiredGems.Remove(gem);
             return gem;
         }
@@ -81,6 +86,7 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
     public ItemSO GetDrop(PotSO potData)
     {
+        Debug.Log($"GetDrop called for pot: {potData.name}, remaining required gems: {remainingRequiredGems.Count}");
         if (remainingRequiredGems.Count > 0)
         {
             return GetRequiredDrop();

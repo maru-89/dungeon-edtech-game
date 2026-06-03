@@ -6,7 +6,7 @@ public class DungeonDoorLogic : MonoBehaviour
     // This is the logic for the locked doors in the dungeon, which will require gems to open.
     // For now, we will just have a simple logic that checks if the player has the required gems to open the door, and if so, opens the door and allows the player to "win".
 
-    private List<ItemSO> requiredGems; // get from DungeonManager when the door is initialized
+    private List<GemSO> requiredGems; // get from DungeonManager when the door is initialized
 
     [SerializeField] private UnityEngine.UI.Image wordDisplayImg; // assign in inspector, this will show the vocab word associated with the door
     [SerializeField] private GameObject gemSocketPrefab; // assign in inspector
@@ -24,7 +24,20 @@ public class DungeonDoorLogic : MonoBehaviour
     public bool PlayerInRange => playerInRange;
     public void Initialise(VocabWordSO vocabWordSO)
     {
-        requiredGems = new List<ItemSO>(vocabWordSO.requiredGems);
+        Debug.Log($"Required vocab word: {vocabWordSO.displayWord}, gems: {vocabWordSO.requiredGems.Count}");
+        requiredGems = new List<GemSO>(vocabWordSO.requiredGems);
+        foreach (GemSO gem in requiredGems)
+        {
+            if (gem != null)
+            {
+                Debug.Log($"Required gem for door: {gem.name}");
+            }
+            else
+            {
+                Debug.LogError("A required gem in the vocab word is null!");
+            }
+        }
+
         wordDisplayImg.sprite = vocabWordSO.displayImage; // assign door image based on vocab word, for now just a placeholder
 
         int socketCount = requiredGems.Count;
@@ -39,10 +52,15 @@ public class DungeonDoorLogic : MonoBehaviour
                 Quaternion.identity,
                 socketAnchor);
 
+            Debug.Log("Socket instantiated at position: " + socket.transform.position);
+
             GemSocketLogic socketLogic = socket.GetComponent<GemSocketLogic>();
+            Debug.Log("SocketLogic found: " + (socketLogic != null));
+
             if (socketLogic != null)
             {
-                socketLogic.Initialize(requiredGems[i] as GemSO, this);
+                Debug.Log($"Initializing socket {i} with gem: {requiredGems[i].name}");
+                socketLogic.Initialize(requiredGems[i], this);
                 sockets.Add(socketLogic);
             }
         }
