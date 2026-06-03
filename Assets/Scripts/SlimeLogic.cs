@@ -49,6 +49,15 @@ public class SlimeLogic : EnemyLogic
     void Update()
     {
         if (isDead) return;
+    
+        // Fall back to finding player transform if it was not found in Awake (e.g. player spawned after slime)
+        if (playerTransform == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) playerTransform = player.transform;
+            return;
+        }
+
         if (isKnockedBack && Time.time >= knockbackResetTime)
         {
             isKnockedBack = false;

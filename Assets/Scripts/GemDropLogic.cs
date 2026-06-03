@@ -37,7 +37,7 @@ public class GemDropLogic : ItemDropLogic
                     Destroy(gameObject);
                 }
             }
-        }
+        } 
     }
 
     public GemSO GetGemData()

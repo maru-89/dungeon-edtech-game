@@ -19,6 +19,7 @@ public class InventoryLogic : MonoBehaviour
     private CharacterController controller;
 
     [SerializeField] private GameObject handPrefab; // Prefab for the UI hand that will be used to select and drag gems in the inventory 
+    [SerializeField] private GameObject inventoryVisualPrefab; // Prefab for the visual representation of the inventory
     private GameObject spawnedHand;
     private PlayerMovement playerMovement;
 
@@ -39,6 +40,7 @@ public class InventoryLogic : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         inventoryAction = playerInput.actions["Player/Inventory"];
         playerInventory = GetComponent<PlayerInventory>();
+        playerInventory.OnInventoryChanged += ChangeInventoryPrefabScale; // Subscribe to inventory change events to update the visual scale
         cameraLogic = Camera.main.GetComponent<CameraLogic>();
         controller = GetComponent<CharacterController>();
         playerMovement = GetComponent<PlayerMovement>();
@@ -65,10 +67,22 @@ public class InventoryLogic : MonoBehaviour
         }
     }
 
+    public void ChangeInventoryPrefabScale(float scaleAmount)
+    {
+        if (inventoryVisualPrefab != null)
+        {
+            inventoryVisualPrefab.transform.localScale *= scaleAmount;
+        }
+    }
+
     void ShowInventoryItems()
     {
         var items = playerInventory.GetInventoryItems();
         int count = items.Count;
+
+        // Notify tutorial manager that inventory has been opened
+        TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+        tutorial?.OnInventoryOpened();
 
         // check if a gem is already being carried
         GemSO carriedGemData = null;
@@ -134,6 +148,9 @@ public class InventoryLogic : MonoBehaviour
         {
             door.TriggerDoorInteraction(this);
         };
+
+        TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+        tutorial?.HideEKeyPrompt(); // Disable the ui for interaction
     }
 
     void DestroyInventoryItems()
@@ -223,6 +240,7 @@ public class InventoryLogic : MonoBehaviour
 
     void OnDestroy()
     {
+        playerInventory.OnInventoryChanged -= ChangeInventoryPrefabScale; // Unsubscribe from events to prevent memory leaks
         DestroyInventoryItems(); // Ensure any remaining items are cleaned up if the player object is destroyed
     }
 }

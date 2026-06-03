@@ -10,10 +10,11 @@ public class CameraLogic : MonoBehaviour
     private bool isInventoryOpen = false;
     private bool isLerping = false;
     private bool isDoorMode = false;
+    private bool isTutorialMode = false;
 
     void LateUpdate()
     {
-        if (!isInventoryOpen && !isLerping && !isDoorMode)
+        if (!isInventoryOpen && !isLerping && !isDoorMode && !isTutorialMode)
         {
             transform.position = defaultAnchor.position;
         }
@@ -64,7 +65,16 @@ public class CameraLogic : MonoBehaviour
 
     public void ReturnToDefault()
     {
+        // If we're in tutorial mode, we want to hide the prompt when returning to default
+        TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+        tutorial?.HideEKeyPrompt();
+
         isDoorMode = false;
         StartCoroutine(LerpToPosition(defaultAnchor));
+    }
+
+    public void SetTutorialMode(bool value)
+    {
+        isTutorialMode = value;
     }
 }

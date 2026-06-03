@@ -106,6 +106,40 @@ public class HandLogic : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Hand trigger entered: {other.name} tag: {other.tag}");
+        if (other.CompareTag("Gem") && heldGem == null)
+        {
+            SetHandColour(greenMaterial);
+            TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+            tutorial?.ShowEKeyPrompt();
+        }
+
+        if (other.CompareTag("GemSocket") && heldGem != null)
+        {
+            TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+            tutorial?.ShowEKeyPrompt();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+
+        if (other.CompareTag("Gem") && heldGem == null)
+        {
+            SetHandColour(redMaterial);
+            TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+            tutorial?.HideEKeyPrompt();
+        }
+
+        if (other.CompareTag("GemSocket") && heldGem != null)
+        {
+            TutorialDungeonManager tutorial = FindAnyObjectByType<TutorialDungeonManager>();
+            tutorial?.HideEKeyPrompt();
+        }
+    }
+
     void TryGrab()
     {
         if (heldGem != null) return;

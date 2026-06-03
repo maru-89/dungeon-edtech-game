@@ -17,6 +17,7 @@ TagManager:
   - 'DisplayItem '
   - Coin
   - Minimap
+  - Gem
   layers:
   - Default
   - TransparentFX

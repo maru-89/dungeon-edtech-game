@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 {
@@ -17,6 +19,13 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
     [SerializeField] private TutorialArrowLogic tutorialArrow;
     [SerializeField] private List<Transform> nextTargetList;
+
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private CameraLogic cameraLogic;
+    [SerializeField] private Transform inventoryZoomAnchor;
+    [SerializeField] private GameObject tabKeyPromptUI;
+    [SerializeField] private GameObject eKeyPromptUI;
 
     private bool teleported = false;
 
@@ -123,10 +132,15 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
     public void OnGemCollected()
     {
+        Debug.Log("Gem collected, remaining required gems: " + remainingRequiredGems.Count);
         if (nextTargetList != null && nextTargetList.Count > 0)
         {
             tutorialArrow.SetTarget(nextTargetList[0]);
             Debug.Log("Gem collected, moving arrow to next target: " + nextTargetList[0].name);
+        }
+        if (remainingRequiredGems.Count == 0)
+        {
+            StartCoroutine(InventoryPromptSequence());
         }
     }
 
@@ -154,5 +168,34 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
         {
             tutorialArrow.gameObject.SetActive(false); // Hide arrow if no more targets
         }
+    }
+
+    IEnumerator InventoryPromptSequence()
+    {
+        controller.enabled = false;
+        playerMovement.enabled = false;
+        
+        cameraLogic.SetTutorialMode(true);
+        StartCoroutine(cameraLogic.LerpToPosition(inventoryZoomAnchor));
+        
+        yield return new WaitForSeconds(0.5f);
+    
+        tabKeyPromptUI.SetActive(true);
+    }
+
+    public void OnInventoryOpened()
+    {
+        tabKeyPromptUI.SetActive(false);
+        cameraLogic.SetTutorialMode(false);
+    }
+
+    public void ShowEKeyPrompt()
+    {
+        eKeyPromptUI.SetActive(true);
+    }
+
+    public void HideEKeyPrompt()
+    {
+        eKeyPromptUI.SetActive(false);
     }
 }

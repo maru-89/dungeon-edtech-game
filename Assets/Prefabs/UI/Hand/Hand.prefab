@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 5812432684296280335}
   - component: {fileID: 333581914843961940}
   - component: {fileID: -8909998948520134090}
+  - component: {fileID: 5771977193256791253}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -160,6 +161,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HandLogic
   moveSpeed: 5
   planeY: 0
+--- !u!54 &5771977193256791253
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3712230062317583615}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7977872648396760543
 GameObject:
   m_ObjectHideFlags: 0

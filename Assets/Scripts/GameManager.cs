@@ -29,9 +29,16 @@ public class GameManager : MonoBehaviour
 
     public void OnDungeonDoorOpened()
     {
-        if (isGameOver) return;
-        isGameOver = true;
-        StartCoroutine(GameEndSequence("You Win!"));
+        if (PlayerPrefs.GetInt("HasPlayed", 0) == 0)
+        {
+            PlayerPrefs.SetInt("HasPlayed", 1);
+            PlayerPrefs.Save();
+            //SceneManager.LoadScene("DungeonScene");
+        }
+        else
+        {
+            StartCoroutine(GameEndSequence("You Win!"));
+        }
     }
 
     public void OnPlayerDeath()
@@ -46,7 +53,6 @@ public class GameManager : MonoBehaviour
         gameStateCanvas.gameObject.SetActive(true);
         gameStateText.text = message;
 
-        // Fade in
         float elapsed = 0f;
         Color colour = fadePanel.color;
         while (elapsed < fadeDuration)
@@ -59,6 +65,13 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(displayDuration);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (SceneManager.GetActiveScene().name == "TutorialScene")
+        {
+            SceneManager.LoadScene("DungeonScene");
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
