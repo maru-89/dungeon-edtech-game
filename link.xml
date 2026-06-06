@@ -1,7 +1,12 @@
 <linker>
-  <assembly fullname="Assembly-CSharp">
-    <type fullname="GemSO" preserve="all" />
-    <type fullname="VocabWordSO" preserve="all" />
-    <type fullname="ItemSO" preserve="all" />
-  </assembly>
+    <assembly fullname="Assembly-CSharp">
+        <type fullname="GemSO" preserve="all"/>
+        <type fullname="HeartSO" preserve="all"/>
+        <type fullname="CoinSO" preserve="all"/>
+        <type fullname="ItemSO" preserve="all"/>
+        <type fullname="EnemySO" preserve="all"/>
+        <type fullname="SlimeSO" preserve="all"/>
+        <type fullname="LanguagePackSO" preserve="all"/>
+        <type fullname="VocabWordSO" preserve="all"/>
+    </assembly>
 </linker>

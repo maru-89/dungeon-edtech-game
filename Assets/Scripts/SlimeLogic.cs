@@ -132,7 +132,7 @@ public class SlimeLogic : EnemyLogic
 
     bool IsPlayerInRange()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, slimeData.slimeChaseRadius);
+        Collider[] hits = Physics.OverlapSphere(transform.position, slimeData.enemyDetectionRange);
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player")) return true;

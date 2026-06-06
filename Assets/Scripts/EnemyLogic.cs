@@ -20,9 +20,9 @@ public class EnemyLogic : MonoBehaviour
                 if (dropRb != null)
                 {
                     Vector3 randomDirection = new Vector3(
-                        (float)DungeonManager.Instance.SeededRandom.NextDouble() * 2f - 1f,
+                        (float)DungeonManagerLocator.Instance.SeededRandom.NextDouble() * 2f - 1f,
                         0,
-                        (float)DungeonManager.Instance.SeededRandom.NextDouble() * 2f - 1f
+                        (float)DungeonManagerLocator.Instance.SeededRandom.NextDouble() * 2f - 1f
                     ).normalized;
                     
                     dropRb.AddForce(randomDirection * 3f + Vector3.up * 4f, ForceMode.Impulse);

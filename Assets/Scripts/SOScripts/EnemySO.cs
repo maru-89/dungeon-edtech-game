@@ -8,14 +8,8 @@ public class EnemySO : ScriptableObject
     public int enemyHealth;
     public int enemyDamage;
     public float enemyMoveSpeed;
+    public float enemyDetectionRange;
     public Sprite enemyIcon;
     public GameObject enemyPrefab;
     public float coinDropChance = 0.5f; // Chance for this enemy to drop a coin on death
-}
-
-[CreateAssetMenu(fileName = "SlimeSO", menuName = "Scriptable Objects/SlimeSO")]
-public class SlimeSO : EnemySO
-{
-    public float slimeJumpHeight = 2f;
-    public float slimeChaseRadius = 10f;
 }

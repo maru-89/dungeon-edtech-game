@@ -16,6 +16,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
+    private float baseSpeed; // set once, never modified by slow zones
+    private bool isSlowed = false;
+
+    public float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
 
     private void Start()
     {
@@ -27,6 +35,21 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         MovePlayer();
+    }
+
+    public void ApplySlow(float slowAmount)
+    {
+        if (isSlowed) return;
+        isSlowed = true;
+        baseSpeed = MoveSpeed;
+        MoveSpeed *= slowAmount;
+    }
+
+    public void RemoveSlow()
+    {
+        if (!isSlowed) return;
+        isSlowed = false;
+        MoveSpeed = baseSpeed;
     }
 
     private void MovePlayer()
