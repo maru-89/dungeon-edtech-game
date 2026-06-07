@@ -18,6 +18,7 @@ TagManager:
   - Coin
   - Minimap
   - Gem
+  - MethodOfLociTransforms
   layers:
   - Default
   - TransparentFX

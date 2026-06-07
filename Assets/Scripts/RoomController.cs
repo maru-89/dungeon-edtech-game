@@ -5,6 +5,11 @@ public class RoomController : MonoBehaviour
 {
     public Vector2Int gridPosition;
     [SerializeField] private Transform spawnCenter;    
+    [SerializeField] private List<Transform> landmarkPositions; // Predefined positions in rooms for landmarks for method of loci
+    [SerializeField] private List<GameObject> landmarkPrefabs; // Prefabs for landmarks for method of loci
+    [SerializeField] private float wallDistance = 100f; // Distance from center to wall, tune to taste
+    [SerializeField] private float torchHeight = 5f; // Height of torches, tune to taste
+    [SerializeField] private GameObject torchPrefab; // Prefab for torch for method of loci
     private int[] oddOffsets = { -35, -25, -15, -5, 5, 15, 25, 35 };
     private int[] evenOffsets = { -30, -15, 0, 15, 30 };
 
@@ -51,7 +56,7 @@ public class RoomController : MonoBehaviour
 
     public void SpawnRoomContents(GameObject potPrefab, GameObject enemyPrefab, int minPots, int maxPots)
     {        
-        System.Random rng = DungeonManager.Instance.SeededRandom; // use seeded random generator from DungeonManager for consistency
+        System.Random rng = DungeonManagerLocator.Instance.SeededRandom; // use seeded random generator from DungeonManager for consistency
         HashSet<Vector2Int> usedPositions = new HashSet<Vector2Int>();
 
         // Spawn pots
@@ -95,6 +100,50 @@ public class RoomController : MonoBehaviour
             Vector3 position = spawnCenter.TransformPoint(new Vector3(xOffset, 0, zOffset));
             Instantiate(enemyPrefab, position, Quaternion.identity);
             enemiesSpawned++;
+        }
+
+        // Spawn landmarks
+        SpawnLandmark();
+
+        // Spawn torches
+        SpawnTorches();
+    }
+
+    void SpawnLandmark()
+    {
+        if (landmarkPositions.Count == 0 || landmarkPrefabs.Count == 0) return;
+        System.Random rng = DungeonManagerLocator.Instance.SeededRandom;
+        Transform chosenPosition = landmarkPositions[rng.Next(0, landmarkPositions.Count)];
+        GameObject chosenPrefab = landmarkPrefabs[rng.Next(0, landmarkPrefabs.Count)];
+        Instantiate(chosenPrefab, chosenPosition.position, chosenPosition.rotation);
+    }
+
+    void SpawnTorches()
+    {
+        if (torchPrefab == null) return;
+        System.Random rng = DungeonManagerLocator.Instance.SeededRandom;
+        
+        float r = (float)rng.NextDouble();
+        float g = (float)rng.NextDouble();
+        float b = (float)rng.NextDouble();
+        Color roomColor = new Color(r, g, b);
+
+        Vector3[] torchOffsets = {
+            new Vector3(0, torchHeight, wallDistance),   // North
+            new Vector3(0, torchHeight, -wallDistance),  // South
+            new Vector3(wallDistance, torchHeight, 0),   // East
+            new Vector3(-wallDistance, torchHeight, 0)   // West
+        };
+
+        foreach (Vector3 offset in torchOffsets)
+        {
+            Vector3 position = spawnCenter.TransformPoint(offset);
+            GameObject torch = Instantiate(torchPrefab, position, Quaternion.identity);
+            Light torchLight = torch.GetComponentInChildren<Light>();
+            if (torchLight != null)
+            {
+                torchLight.color = roomColor;
+            }
         }
     }
 }
