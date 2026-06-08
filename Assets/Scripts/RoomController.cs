@@ -5,11 +5,8 @@ public class RoomController : MonoBehaviour
 {
     public Vector2Int gridPosition;
     [SerializeField] private Transform spawnCenter;    
-    [SerializeField] private List<Transform> landmarkPositions; // Predefined positions in rooms for landmarks for method of loci
-    [SerializeField] private List<GameObject> landmarkPrefabs; // Prefabs for landmarks for method of loci
-    [SerializeField] private float wallDistance = 100f; // Distance from center to wall, tune to taste
-    [SerializeField] private float torchHeight = 5f; // Height of torches, tune to taste
-    [SerializeField] private GameObject torchPrefab; // Prefab for torch for method of loci
+    [SerializeField] private MethodOfLociSO methodOfLoci;
+
     private int[] oddOffsets = { -35, -25, -15, -5, 5, 15, 25, 35 };
     private int[] evenOffsets = { -30, -15, 0, 15, 30 };
 
@@ -111,16 +108,24 @@ public class RoomController : MonoBehaviour
 
     void SpawnLandmark()
     {
-        if (landmarkPositions.Count == 0 || landmarkPrefabs.Count == 0) return;
+        if (methodOfLoci.landmarkPrefabs.Count == 0) return;
         System.Random rng = DungeonManagerLocator.Instance.SeededRandom;
-        Transform chosenPosition = landmarkPositions[rng.Next(0, landmarkPositions.Count)];
-        GameObject chosenPrefab = landmarkPrefabs[rng.Next(0, landmarkPrefabs.Count)];
-        Instantiate(chosenPrefab, chosenPosition.position, chosenPosition.rotation);
+
+        Vector3[] landmarkOffsets = {
+            new Vector3(methodOfLoci.wallDistance-methodOfLoci.landmarkOffset, 0, methodOfLoci.wallDistance-methodOfLoci.landmarkOffset),   // NorthEast
+            new Vector3(-methodOfLoci.wallDistance+methodOfLoci.landmarkOffset, 0, methodOfLoci.wallDistance-methodOfLoci.landmarkOffset),  // NorthWest
+            new Vector3(methodOfLoci.wallDistance-methodOfLoci.landmarkOffset, 0, -methodOfLoci.wallDistance+methodOfLoci.landmarkOffset),   // SouthEast
+            new Vector3(-methodOfLoci.wallDistance+methodOfLoci.landmarkOffset, 0, -methodOfLoci.wallDistance+methodOfLoci.landmarkOffset)   // SouthWest
+        };
+
+        Vector3 position = spawnCenter.TransformPoint(landmarkOffsets[rng.Next(0, landmarkOffsets.Length)]);
+        GameObject prefab = methodOfLoci.landmarkPrefabs[rng.Next(0, methodOfLoci.landmarkPrefabs.Count)];
+        Instantiate(prefab, position, Quaternion.identity);
     }
 
     void SpawnTorches()
     {
-        if (torchPrefab == null) return;
+        if (methodOfLoci.torchPrefab == null) return;
         System.Random rng = DungeonManagerLocator.Instance.SeededRandom;
         
         float r = (float)rng.NextDouble();
@@ -129,16 +134,16 @@ public class RoomController : MonoBehaviour
         Color roomColor = new Color(r, g, b);
 
         Vector3[] torchOffsets = {
-            new Vector3(0, torchHeight, wallDistance),   // North
-            new Vector3(0, torchHeight, -wallDistance),  // South
-            new Vector3(wallDistance, torchHeight, 0),   // East
-            new Vector3(-wallDistance, torchHeight, 0)   // West
+            new Vector3(0, methodOfLoci.torchHeight, methodOfLoci.wallDistance),   // North
+            new Vector3(0, methodOfLoci.torchHeight, -methodOfLoci.wallDistance),  // South
+            new Vector3(methodOfLoci.wallDistance, methodOfLoci.torchHeight, 0),   // East
+            new Vector3(-methodOfLoci.wallDistance, methodOfLoci.torchHeight, 0)   // West
         };
 
         foreach (Vector3 offset in torchOffsets)
         {
             Vector3 position = spawnCenter.TransformPoint(offset);
-            GameObject torch = Instantiate(torchPrefab, position, Quaternion.identity);
+            GameObject torch = Instantiate(methodOfLoci.torchPrefab, position, Quaternion.identity);
             Light torchLight = torch.GetComponentInChildren<Light>();
             if (torchLight != null)
             {
