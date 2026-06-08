@@ -29,20 +29,25 @@ public class GameManager : MonoBehaviour
 
     public void OnDungeonDoorOpened()
     {
+        Debug.Log("Dungeon door opened - player wins!");
         if (PlayerPrefs.GetInt("HasPlayed", 0) == 0)
         {
+            Debug.Log("First time playing - showing win message and returning to main menu");
             PlayerPrefs.SetInt("HasPlayed", 1);
             PlayerPrefs.Save();
+            StartCoroutine(GameEndSequence("You Win!"));
             //SceneManager.LoadScene("DungeonScene");
         }
         else
         {
+            Debug.Log("Not first time playing - skipping win message and returning to main menu");
             StartCoroutine(GameEndSequence("You Win!"));
         }
     }
 
     public void OnPlayerDeath()
     {
+        Debug.Log("Player has died!");
         if (isGameOver) return;
         isGameOver = true;
         StartCoroutine(GameEndSequence("You Lose!"));

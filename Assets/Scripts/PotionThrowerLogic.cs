@@ -81,7 +81,7 @@ public class PotionThrowerLogic : EnemyLogic
         {
             if (hit.CompareTag("Player"))
             {
-                Debug.Log("PotionThrower collided with player, dealing damage. Update with OverlapSphere");
+                //Debug.Log("PotionThrower collided with player, dealing damage. Update with OverlapSphere");
                 PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
                 if (playerHealth != null)
                 {
@@ -97,24 +97,24 @@ public class PotionThrowerLogic : EnemyLogic
     {
         if (!IsPlayerInRange())
         {
-            Debug.Log("Player not in range, wandering.");
+            //Debug.Log("Player not in range, wandering.");
             Wander();
             return;
         }
 
         if (IsPlayerTooClose())
         {
-            Debug.Log("Player too close, retreating.");
+            //Debug.Log("Player too close, retreating.");
             Retreat();
         }
         else if (IsPlayerInThrowingRange())
         {
-            Debug.Log("Player in throwing range, throwing potion.");
+            //Debug.Log("Player in throwing range, throwing potion.");
             ThrowPotion(); // stay still and throw
         }
         else
         {
-            Debug.Log("Chasing player.");
+            //Debug.Log("Chasing player.");
             Chase();
         }
     }
@@ -136,6 +136,7 @@ public class PotionThrowerLogic : EnemyLogic
 
     bool IsPlayerTooClose()
     {
+        //Debug.Log($"IsPlayerTooClose check, threshold: {potionThrowerData.playerDistanceThreshold * 0.5f}");
         Collider[] hits = Physics.OverlapSphere(transform.position, potionThrowerData.playerDistanceThreshold * 0.5f);
         foreach (Collider hit in hits)
         {
@@ -221,10 +222,10 @@ public class PotionThrowerLogic : EnemyLogic
     bool IsPlayerInRange()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, potionThrowerData.enemyDetectionRange);
-        Debug.Log($"IsPlayerInRange check, detectionRange: {potionThrowerData.enemyDetectionRange}, hits: {hits.Length}");
+        //Debug.Log($"IsPlayerInRange check, detectionRange: {potionThrowerData.enemyDetectionRange}, hits: {hits.Length}");
         foreach (Collider hit in hits)
         {
-            Debug.Log($"Hit: {hit.name} tag: {hit.tag}");
+            //Debug.Log($"Hit: {hit.name} tag: {hit.tag}");
             if (hit.CompareTag("Player")) return true;
         }
         return false;
@@ -264,19 +265,19 @@ public class PotionThrowerLogic : EnemyLogic
         lastHitTime = Time.time;
         currentHealth -= damage;
         
-        Debug.Log($"PotionThrower health: {currentHealth}");
+        //Debug.Log($"PotionThrower health: {currentHealth}");
         
         if (currentHealth <= 0)
         {
             isDead = true;
             Die();
         }
-        Debug.Log($"PotionThrower took {damage} damage. Implement health reduction and death logic.");
+        //Debug.Log($"PotionThrower took {damage} damage. Implement health reduction and death logic.");
     }
 
     public void Die()
     {
-        Debug.Log("PotionThrower died.");
+        //Debug.Log("PotionThrower died.");
         base.Die(potionThrowerData.coinDropChance);
     }
 }

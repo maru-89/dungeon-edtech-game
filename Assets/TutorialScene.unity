@@ -736,7 +736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8206777273129264154, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 69.53452
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8206777273129264154, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
       propertyPath: m_LocalRotation.w
@@ -756,7 +756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8206777273129264154, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1.02775
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8206777273129264154, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -777,6 +777,14 @@ PrefabInstance:
     - target: {fileID: 9046081841220887081, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
       propertyPath: m_Name
       value: GameStateCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046081841220887081, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9161662788377686628, guid: 50464d711a136364d9f4e55f1ebd8b45, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

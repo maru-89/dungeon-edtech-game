@@ -4,9 +4,13 @@
         <type fullname="HeartSO" preserve="all"/>
         <type fullname="CoinSO" preserve="all"/>
         <type fullname="ItemSO" preserve="all"/>
+        <type fullname="PotSO" preserve="all"/>
         <type fullname="EnemySO" preserve="all"/>
         <type fullname="SlimeSO" preserve="all"/>
         <type fullname="LanguagePackSO" preserve="all"/>
         <type fullname="VocabWordSO" preserve="all"/>
+        <type fullname="MethodOfLociSO" preserve="all"/>
+        <type fullname="PotionThrowerSO" preserve="all"/>
+        <type fullname="PotionProjectileSO" preserve="all"/>
     </assembly>
 </linker>
