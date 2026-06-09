@@ -22,7 +22,7 @@ public class DungeonDoorLogic : MonoBehaviour
 
     private bool playerInRange = false; // Track if player is in range to interact with the door, to control camera lerping and hand UI
     public bool PlayerInRange => playerInRange;
-    public void Initialise(VocabWordSO vocabWordSO)
+    public void Initialise(CurriculumItemSO vocabWordSO)
     {
         Debug.Log($"Required vocab word: {vocabWordSO.displayWord}, gems: {vocabWordSO.requiredGems.Count}");
         requiredGems = new List<GemSO>(vocabWordSO.requiredGems);

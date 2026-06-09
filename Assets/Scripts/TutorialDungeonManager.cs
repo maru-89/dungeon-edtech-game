@@ -13,7 +13,7 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
     [SerializeField] private ItemSO heartItem;
     [SerializeField] private ItemSO coinItem;
 
-    [SerializeField] private LanguagePackSO currentPack;
+    [SerializeField] private CurriculumPackSO currentPack;
 
     [SerializeField] private DungeonDoorLogic dungeonDoor;
 
@@ -30,7 +30,7 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
     private bool teleported = false;
 
-    private VocabWordSO selectedWord;
+    private CurriculumItemSO selectedItem;
     private List<GemSO> remainingRequiredGems;
 
     void Awake()
@@ -59,15 +59,15 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
         if (dungeonDoor != null)
         {
-            Debug.Log($"Initialising door with word: {selectedWord.displayWord}, gems: {selectedWord.requiredGems.Count}");
-            dungeonDoor.Initialise(selectedWord);
+            Debug.Log($"Initialising door with word: {selectedItem.displayWord}, gems: {selectedItem.requiredGems.Count}");
+            dungeonDoor.Initialise(selectedItem);
         }
     }
 
     public void InitialiseDungeon()
     {
-        selectedWord = currentPack.vocabWordList[0]; // always first word for tutorial
-        remainingRequiredGems = new List<GemSO>(selectedWord.requiredGems);
+        selectedItem = currentPack.curriculumItemList[0]; // always first item for tutorial
+        remainingRequiredGems = new List<GemSO>(selectedItem.requiredGems);
         Debug.Log($"Tutorial initialised, required gems: {remainingRequiredGems.Count}");
     }
 
@@ -119,7 +119,7 @@ public class TutorialDungeonManager : MonoBehaviour, IDungeonManager
 
     public List<ItemSO> GetRequiredGems()
     {
-        return new List<ItemSO>(selectedWord.requiredGems);
+        return new List<ItemSO>(selectedItem.requiredGems);
     }
 
     public void OnPotBroken()

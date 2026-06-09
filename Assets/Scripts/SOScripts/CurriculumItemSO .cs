@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "VocabWordSO", menuName = "Scriptable Objects/VocabWordSO")]
-public class VocabWordSO : ScriptableObject
+[CreateAssetMenu(fileName = "CurriculumItemSO", menuName = "Scriptable Objects/CurriculumItemSO")]
+public class CurriculumItemSO : ScriptableObject
 {
     public string displayWord;
     public Sprite displayImage;

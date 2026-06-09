@@ -26,8 +26,8 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
     [SerializeField] private ItemSO coinItem; // Reference to coin item for drops
     private int roomCount = 0;
 
-    [SerializeField] private LanguagePackSO currentPack;
-    private VocabWordSO selectedWord;
+    [SerializeField] private CurriculumPackSO currentPack;
+    private CurriculumItemSO selectedWord;
     // For item drops, hardcoded for now, from pack later
     //[SerializeField] private List<ItemSO> requiredGems; // hardcoded for now, from pack later
     //[SerializeField] private List<ItemSO> possibleDrops; // all optional drops
@@ -79,8 +79,8 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
             Destroy(gameObject);
             return;
         }
-
         SetDungeonSeed();
+        SetCurriculumPack(GameConfig.ActivePack); // Set the curriculum pack from the static GameConfig
     }
 
     void SpawnRoomContents()
@@ -104,6 +104,11 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
         MinimapManager.Instance.RevealRoom(Vector2Int.zero); // Reveal the center room
     }
 
+    public void SetCurriculumPack(CurriculumPackSO pack)
+    {
+        currentPack = pack;
+    }
+
     void SetDungeonSeed()
     {
         // Set seed for reproducibility
@@ -114,9 +119,9 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
 
     public void InitialiseDungeon()
     {
-        int wordIndex = SeededRandom.Next(0, currentPack.vocabWordList.Count);
+        int wordIndex = SeededRandom.Next(0, currentPack.curriculumItemList.Count);
         Debug.Log($"Word index selected: {wordIndex}");
-        selectedWord = currentPack.vocabWordList[wordIndex];
+        selectedWord = currentPack.curriculumItemList[wordIndex];
         remainingRequiredGems = new List<GemSO>(selectedWord.requiredGems); // copy required gems from pack for tracking
     }
 
