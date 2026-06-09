@@ -99,18 +99,18 @@ public class RoomController : MonoBehaviour
             enemiesSpawned++;
         }
 
-        // Spawn landmarks
-        SpawnLandmark();
-
-        // Spawn torches
-        SpawnTorches();
+        SpawnRoomVisuals(rng.Next(0, methodOfLoci.roomThemes.Count), rng); // Randomly select a room theme for visual variety - can be overridden later to assign specific themes to specific rooms if desired
     }
 
-    void SpawnLandmark()
+    void SpawnRoomVisuals(int themeIndex, System.Random rng)
     {
-        if (methodOfLoci.landmarkPrefabs.Count == 0) return;
-        System.Random rng = DungeonManagerLocator.Instance.SeededRandom;
+        RoomThemeSO roomTheme = methodOfLoci.roomThemes[themeIndex];
+        SpawnLandmark(roomTheme, rng);
+        SpawnTorches(roomTheme);
+    }
 
+    void SpawnLandmark(RoomThemeSO roomTheme, System.Random rng)
+    {
         Vector3[] landmarkOffsets = {
             new Vector3(methodOfLoci.wallDistance-methodOfLoci.landmarkOffset, 0, methodOfLoci.wallDistance-methodOfLoci.landmarkOffset),   // NorthEast
             new Vector3(-methodOfLoci.wallDistance+methodOfLoci.landmarkOffset, 0, methodOfLoci.wallDistance-methodOfLoci.landmarkOffset),  // NorthWest
@@ -119,19 +119,12 @@ public class RoomController : MonoBehaviour
         };
 
         Vector3 position = spawnCenter.TransformPoint(landmarkOffsets[rng.Next(0, landmarkOffsets.Length)]);
-        GameObject prefab = methodOfLoci.landmarkPrefabs[rng.Next(0, methodOfLoci.landmarkPrefabs.Count)];
-        Instantiate(prefab, position, Quaternion.identity);
+        Instantiate(roomTheme.landmarkPrefab, position, Quaternion.identity);
     }
 
-    void SpawnTorches()
+    void SpawnTorches(RoomThemeSO roomTheme)
     {
         if (methodOfLoci.torchPrefab == null) return;
-        System.Random rng = DungeonManagerLocator.Instance.SeededRandom;
-        
-        float r = (float)rng.NextDouble();
-        float g = (float)rng.NextDouble();
-        float b = (float)rng.NextDouble();
-        Color roomColor = new Color(r, g, b);
 
         Vector3[] torchOffsets = {
             new Vector3(0, methodOfLoci.torchHeight, methodOfLoci.wallDistance),   // North
@@ -147,7 +140,7 @@ public class RoomController : MonoBehaviour
             Light torchLight = torch.GetComponentInChildren<Light>();
             if (torchLight != null)
             {
-                torchLight.color = roomColor;
+                torchLight.color = roomTheme.torchColor;
             }
         }
     }
