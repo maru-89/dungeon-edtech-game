@@ -9,6 +9,7 @@
         <type fullname="SlimeSO" preserve="all"/>
         <type fullname="CurriculumPackSO" preserve="all"/>
         <type fullname="CurriculumItemSO" preserve="all"/>
+        <type fullname="CosmeticSO" preserve="all"/>
         <type fullname="MethodOfLociSO" preserve="all"/>
         <type fullname="RoomThemeSO" preserve="all"/>
         <type fullname="PotionThrowerSO" preserve="all"/>

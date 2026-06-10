@@ -10,6 +10,7 @@ public class ShopLogic : MonoBehaviour
     private List<ShopItemLogic> shopItems = new List<ShopItemLogic>();
     private PlayerWallet playerWallet;
     private PlayerCosmeticLogic playerCosmeticLogic;
+    private PedestalDisplayLogic pedestalDisplayLogic;
 
     private void Start()
     {
@@ -28,7 +29,11 @@ public class ShopLogic : MonoBehaviour
             if (i >= pedestalTransforms.Count) break;
 
             GameObject pedestal = Instantiate(pedestalPrefab, pedestalTransforms[i].position, Quaternion.identity);
+            pedestalDisplayLogic = pedestal.GetComponent<PedestalDisplayLogic>();
+
             GameObject item = Instantiate(availableCosmetics[i].cosmeticPrefab, pedestal.transform); 
+            pedestalDisplayLogic.SetCosmetic(item); // assign cosmetic to pedestal display logic for bobbing and rotation
+
             item.transform.localPosition = Vector3.up * pedestalHeight; // offset item upward so it sits on top of pedestal
             ShopItemLogic itemLogic = item.GetComponent<ShopItemLogic>();
             itemLogic.index = i;

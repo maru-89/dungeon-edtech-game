@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6875614446424451157}
   - component: {fileID: 3303234742482528145}
   - component: {fileID: 4376903221606861640}
+  - component: {fileID: -7798463984911626078}
   m_Layer: 0
   m_Name: Pedestal
   m_TagString: Untagged
@@ -112,3 +113,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7798463984911626078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5447373051148535471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b6a9ff290519a4daa69e796d64bc64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PedestalDisplayLogic
+  bobHeight: 0.25
+  bobSpeed: 2
+  rotationSpeed: 30
