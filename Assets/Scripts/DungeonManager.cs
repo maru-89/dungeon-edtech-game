@@ -62,6 +62,7 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
 
     void Start()
     {
+        CosmeticInventory.Load(); // Load cosmetic inventory to ensure any unlocked cosmetics are available when starting the game
         roomScale = MinimapManager.Instance.GetOverlayScale(); // Cache the room scale
         StartCoroutine(LogAfterGeneration());
         InitialiseDungeon();

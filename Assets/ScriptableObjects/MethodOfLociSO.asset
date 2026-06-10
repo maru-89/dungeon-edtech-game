@@ -13,15 +13,11 @@ MonoBehaviour:
   m_Name: MethodOfLociSO
   m_EditorClassIdentifier: Assembly-CSharp::MethodOfLociSO
   torchPrefab: {fileID: 2178579958824459759, guid: 0646801d676704949a2d408af9faa503, type: 3}
-  landmarkPrefabs:
-  - {fileID: 4960852838930825559, guid: 67445c9c1839358479ba66743a9fd3ae, type: 3}
-  - {fileID: 1979378331857622161, guid: a48b9e22ed8fd5f48b5d0db14a57bdd9, type: 3}
-  - {fileID: 7664608757615103297, guid: 9e225bee27aa5834abd052156ce272a4, type: 3}
-  - {fileID: 8533738527869525182, guid: 362b4ab35e4db0043b9bb846bbddaf43, type: 3}
-  landmarkPositions:
-  - {fileID: 2068165591796319693, guid: 5fea777815e657944a913c00ba51930f, type: 3}
-  - {fileID: 5638408154118748922, guid: a03e67cc1bb18e6408d4a89314feff3a, type: 3}
-  - {fileID: 2450550984091724519, guid: de22c60cf5a930a45a1556ecd46a0a02, type: 3}
-  - {fileID: 5043989686509088252, guid: 7e892ee665797314e81ecd72632172d4, type: 3}
+  roomThemes:
+  - {fileID: 11400000, guid: 16f167e6aa9cdfe4dbdba2e9f54e917f, type: 2}
+  - {fileID: 11400000, guid: a0e8949235365c548ba04d9d809a66d7, type: 2}
+  - {fileID: 11400000, guid: f731f7e7d59708042b21faa98f571cac, type: 2}
+  - {fileID: 11400000, guid: f1e93bfa83995e14cb63234e89e362a1, type: 2}
   wallDistance: 48
   torchHeight: 9
+  landmarkOffset: 5

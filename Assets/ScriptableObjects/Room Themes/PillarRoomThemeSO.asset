@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f9a679e5f670d49b1459096d8b1248, type: 3}
   m_Name: PillarRoomThemeSO
   m_EditorClassIdentifier: Assembly-CSharp::RoomThemeSO
-  roomThemeName: 
-  landmarkPrefab: {fileID: 0}
-  torchColor: {r: 0, g: 0, b: 0, a: 0}
+  roomThemeName: Pillar Room
+  landmarkPrefab: {fileID: 7664608757615103297, guid: 9e225bee27aa5834abd052156ce272a4, type: 3}
+  torchColor: {r: 1, g: 1, b: 1, a: 0}
   landmarkSprite: {fileID: 0}

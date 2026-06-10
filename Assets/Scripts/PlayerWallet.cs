@@ -21,6 +21,18 @@ public class PlayerWallet : MonoBehaviour
         Debug.Log($"Added {amount} coins, total: {coinCount}");
     }
 
+    public bool Spend(int amount)
+    {
+        if (coinCount < amount) return false;
+        
+        coinCount -= amount;
+        PlayerPrefs.SetInt(CoinKey, coinCount);
+        PlayerPrefs.Save();
+        OnCoinsChanged?.Invoke(coinCount);
+        Debug.Log($"Spent {amount} coins, total: {coinCount}");
+        return true;
+    }
+
     public int GetCoinCount()
     {
         return coinCount;

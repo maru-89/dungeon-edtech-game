@@ -17,11 +17,13 @@ public class PlayerLogic : MonoBehaviour
 
     [SerializeField] private Transform potCarryPoint; // the head point you already added
     [SerializeField] private float pickupRadius = 2f;
+    private ShopLogic shopLogic;
 
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         interactAction = playerInput.actions["Player/Interact"];
+        shopLogic = FindAnyObjectByType<ShopLogic>();
     }
 
 
@@ -54,7 +56,7 @@ public class PlayerLogic : MonoBehaviour
         {
             if (interactAction.WasPressedThisFrame())
             {
-                TryPickup();
+                TryInteract();
                 StartCoroutine(InteractCooldown());
             }
         }
@@ -67,7 +69,7 @@ public class PlayerLogic : MonoBehaviour
         canInteract = true;
     }
 
-    void TryPickup()
+    void TryInteract()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius);
         PotLogic nearestPot = null;
@@ -75,8 +77,16 @@ public class PlayerLogic : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
+            // Shop item check first
+            ShopItemLogic shopItem = hit.GetComponent<ShopItemLogic>();
+            if (shopItem != null && shopLogic != null)
+            {
+                shopLogic.Purchase(shopItem.index);
+                return;
+            }
+
+            // existing pot logic
             PotLogic pot = hit.GetComponent<PotLogic>();
-            Debug.Log($"Found collider: {hit.name}, PotLogic: {(pot != null ? "Yes" : "No")}");
             if (pot != null)
             {
                 float distance = Vector3.Distance(transform.position, hit.transform.position);

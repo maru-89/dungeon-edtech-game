@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f9a679e5f670d49b1459096d8b1248, type: 3}
   m_Name: ChestRoomThemeSO
   m_EditorClassIdentifier: Assembly-CSharp::RoomThemeSO
-  roomThemeName: 
-  landmarkPrefab: {fileID: 0}
-  torchColor: {r: 0, g: 0, b: 0, a: 0}
+  roomThemeName: Chest Room
+  landmarkPrefab: {fileID: 4960852838930825559, guid: 67445c9c1839358479ba66743a9fd3ae, type: 3}
+  torchColor: {r: 0.8773585, g: 0.8258817, b: 0.15312389, a: 0}
   landmarkSprite: {fileID: 0}

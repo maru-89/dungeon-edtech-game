@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f9a679e5f670d49b1459096d8b1248, type: 3}
   m_Name: StatueRoomThemeSO
   m_EditorClassIdentifier: Assembly-CSharp::RoomThemeSO
-  roomThemeName: 
-  landmarkPrefab: {fileID: 0}
-  torchColor: {r: 0, g: 0, b: 0, a: 0}
+  roomThemeName: Statue Room
+  landmarkPrefab: {fileID: 8533738527869525182, guid: 362b4ab35e4db0043b9bb846bbddaf43, type: 3}
+  torchColor: {r: 0.9234618, g: 0, b: 1, a: 0}
   landmarkSprite: {fileID: 0}

@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Dungeon door opened - player wins!");
         if (PlayerPrefs.GetInt("HasPlayed", 0) == 0)
         {
-            Debug.Log("First time playing - showing win message and returning to main menu");
+            Debug.Log("First time playing - showing win message");
             PlayerPrefs.SetInt("HasPlayed", 1);
             PlayerPrefs.Save();
             StartCoroutine(GameEndSequence("You Win!"));
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not first time playing - skipping win message and returning to main menu");
+            Debug.Log("Not first time playing - skipping win message");
             StartCoroutine(GameEndSequence("You Win!"));
         }
     }
@@ -74,9 +74,13 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("DungeonScene");
         }
+        else if (SceneManager.GetActiveScene().name == "DungeonScene")
+        {
+            SceneManager.LoadScene("ShopScene");
+        }
         else
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+           SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload current scene for any other cases (e.g. player death in shop)
         }
     }
 }

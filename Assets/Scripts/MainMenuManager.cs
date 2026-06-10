@@ -18,6 +18,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        CosmeticInventory.Load(); // Load cosmetic inventory to ensure any unlocked cosmetics are available when starting the game
         curriculumDropdown.ClearOptions();
     
         List<string> options = new List<string>();
@@ -35,7 +36,6 @@ public class MainMenuManager : MonoBehaviour
     private void OnPlayClicked()
     {
         StartGame(packIndex);
-        SceneManager.LoadScene("DungeonScene");
     }
 
     private void OnCurriculumChanged(int newIndex)
@@ -61,6 +61,7 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log("First time playing - starting TutorialScene");
             PlayerPrefs.SetInt("HasPlayed", 1);
             PlayerPrefs.Save();
+            GameConfig.ActivePack = availablePacks[packIndex];
             SceneManager.LoadScene("TutorialScene");
         }
         else
