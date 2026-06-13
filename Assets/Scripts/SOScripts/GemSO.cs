@@ -4,4 +4,5 @@ using UnityEngine;
 public class GemSO : ItemSO
 {
     public string gemCharacter;
+    public Sprite gemSprite;
 }

@@ -107,7 +107,10 @@ public class DungeonManager : MonoBehaviour, IDungeonManager
 
     public void SetCurriculumPack(CurriculumPackSO pack)
     {
-        currentPack = pack;
+        if (pack != null)
+        {
+            currentPack = pack;
+        }
     }
 
     void SetDungeonSeed()

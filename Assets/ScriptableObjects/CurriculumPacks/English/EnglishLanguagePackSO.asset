@@ -15,6 +15,7 @@ MonoBehaviour:
   curriculumName: English Fruits
   gradeLevel: 1
   difficulty: 0
+  supportedRetrievalTypes: 0000000001000000
   fullGemList:
   - {fileID: 11400000, guid: f1ea4411a41a88f42b222734df957eef, type: 2}
   - {fileID: 11400000, guid: 7dac095cdb1361b47bf7ed919867a245, type: 2}

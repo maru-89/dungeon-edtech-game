@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("DungeonScene");
         }
-        else if (SceneManager.GetActiveScene().name == "DungeonScene")
+        else if (SceneManager.GetActiveScene().name == "DungeonScene" && message == "You Win!")
         {
             SceneManager.LoadScene("ShopScene");
         }

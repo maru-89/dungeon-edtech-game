@@ -6,8 +6,8 @@ public class CurriculumPackSO : ScriptableObject
 {
     public string curriculumName;
     public int gradeLevel;
-    public enum DifficultyLevel { Easy, Medium, Hard }
     public DifficultyLevel difficulty;
+    public List<RetrievalType> supportedRetrievalTypes;
     public List<GemSO> fullGemList;
     public List<CurriculumItemSO> curriculumItemList;
 }

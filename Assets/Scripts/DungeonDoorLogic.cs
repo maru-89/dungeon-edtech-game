@@ -24,8 +24,9 @@ public class DungeonDoorLogic : MonoBehaviour
     public bool PlayerInRange => playerInRange;
     public void Initialise(CurriculumItemSO vocabWordSO)
     {
-        Debug.Log($"Required vocab word: {vocabWordSO.displayWord}, gems: {vocabWordSO.requiredGems.Count}");
         requiredGems = new List<GemSO>(vocabWordSO.requiredGems);
+        requiredGems.RemoveAll(g => g == null || string.IsNullOrEmpty(g.gemCharacter)); // remove any gems without a character
+        Debug.Log($"Required vocab word: {vocabWordSO.displayWord}, gems: {vocabWordSO.requiredGems.Count}");
         foreach (GemSO gem in requiredGems)
         {
             if (gem != null)

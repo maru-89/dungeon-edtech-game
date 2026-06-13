@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PlayerCosmeticLogic : MonoBehaviour
 {
-    [SerializeField] private List<Transform> attachPoints; // { Hat - 0, Cape - 1, Clothing - 2, Weapon - 3 }
+    [SerializeField] private List<Transform> attachPoints; // { Head - 0, Face - 1, Body - 2, Weapon - 3 }
     [SerializeField] private List<CosmeticSO> allCosmetics;
 
     private void Start()

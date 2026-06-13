@@ -6,6 +6,8 @@ public class GemDropLogic : ItemDropLogic
     private Rigidbody rb;
 
     [SerializeField] private TMPro.TextMeshPro gemText; // assign in inspector, this will display the letter on the gem
+    [SerializeField] private SpriteRenderer gemSpriteRenderer; // assign in inspector, this will display the sprite on the gem
+    private float targetSize = 0.5f; // for sprite size on gems
 
     void Awake()
     {
@@ -21,11 +23,24 @@ public class GemDropLogic : ItemDropLogic
         if (data is GemSO gem)
         {
             gemData = gem;
-            
-            // Double-check that your UI component is assigned to avoid another potential NRE!
-            if (gemText != null) 
+
+            if (gemText != null &&
+                !string.IsNullOrEmpty(gemData.gemCharacter))
             {
-                gemText.text = gemData.gemCharacter.ToString();
+                gemText.text = gemData.gemCharacter;
+            }
+
+            if (gemSpriteRenderer != null &&
+                gemData.gemSprite != null)
+            {
+                gemSpriteRenderer.sprite = gemData.gemSprite;
+
+                Vector2 size = gemSpriteRenderer.sprite.bounds.size;
+                float largestDimension = Mathf.Max(size.x, size.y);
+
+                float scale = targetSize / largestDimension;
+
+                gemSpriteRenderer.transform.localScale = Vector3.one * scale;
             }
             else
             {
